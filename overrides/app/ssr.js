@@ -12,7 +12,7 @@ import {getRuntime} from '@salesforce/pwa-kit-runtime/ssr/server/express'
 import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/middleware'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
-import cheerio from 'cheerio'
+// import cheerio from 'cheerio'
 
 const options = {
     // The build directory (an absolute path)
@@ -49,8 +49,8 @@ const {handler} = runtime.createHandler(options, (app) => {
                         '*.commercecloud.salesforce.com',
                         'via.placeholder.com',
                         'data:',
-                        'https://*.builder.io',
-                        'https://builder.io'
+                        '*.builder.io',
+                        'builder.io'
                     ],
                     'script-src': [
                         // Used by the service worker in /worker/main.js
@@ -58,18 +58,17 @@ const {handler} = runtime.createHandler(options, (app) => {
                         "'self'",
                         "'unsafe-eval'",
                         'storage.googleapis.com',
-                        'https://*.builder.io',
+                        '*.builder.io',
+                        // Builder requires unsafe-inline to run custom code defined in the CMS
                         "'unsafe-inline'"
                     ],
                     'connect-src': [
                         // Connect to Einstein APIs
-                        'api.cquotient.com'
+                        'api.cquotient.com',
+                        '*.builder.io',
+                        'builder.io'
                     ],
-                    'frame-ancestors': [
-                        'https://*.builder.io',
-                        'https://builder.io',
-                        'http://localhost'
-                    ]
+                    'frame-ancestors': ['*.builder.io', 'builder.io', 'localhost']
                 }
             }
         })
@@ -87,6 +86,8 @@ const {handler} = runtime.createHandler(options, (app) => {
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
     app.get('*', runtime.render)
+
+    // temporarily removed, to confirm if still an issue with newer SDKs?
     // app.get('*', (req, res, next) => {
     //     const interceptedResponse = interceptMethodCalls(res, 'send', ([result]) => {
     //         const styles = extractABTestingStyles(result)

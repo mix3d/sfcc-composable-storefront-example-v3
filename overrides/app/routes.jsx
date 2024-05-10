@@ -19,7 +19,8 @@ const fallback = <Skeleton height="75vh" width="100%" />
 // Create your pages here and add them to the routes array
 // Use loadable to split code into smaller js chunks
 const Home = loadable(() => import('./pages/home'), {fallback})
-const MyNewRoute = loadable(() => import('./pages/my-new-route'))
+const MarketingPages = loadable(() => import('./pages/marketing-pages'))
+const BlogPages = loadable(() => import('./pages/blog-pages'))
 
 const routes = [
     {
@@ -28,8 +29,12 @@ const routes = [
         exact: true
     },
     {
-        path: '/my-new-route',
-        component: MyNewRoute
+        path: '/blog/**',
+        component: BlogPages
+    },
+    {
+        path: '*',
+        component: MarketingPages
     },
     ..._routes
 ]

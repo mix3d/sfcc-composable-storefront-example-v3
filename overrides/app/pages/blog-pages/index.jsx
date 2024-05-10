@@ -1,14 +1,50 @@
 import React from 'react'
-import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
-import PageNotFound from '../page-not-found'
-import Seo from '../../components/seo'
+import PageNotFound from '@salesforce/retail-react-app/app/pages/page-not-found'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
+import Seo from '@salesforce/retail-react-app/app/components/seo'
+
 import {Box, Container, Skeleton} from '@chakra-ui/react'
 import PropTypes from 'prop-types'
-import builderConfig from '../../utils/builder'
-import BlogCard from '../../components/blocks/blog-card'
+import builderConfig from '~/builder/map.js'
+
+import BlogCard from '~/builder/blocks/blog-card'
+
+import {useQuery} from '@tanstack/react-query'
+
+import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
+
+// import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
+import {
+    Content,
+    fetchEntries,
+    fetchOneEntry,
+    isEditing,
+    isPreviewing,
+    getBuilderSearchParams
+} from '@builder.io/sdk-react'
+
 export const BlogPage = (params) => {
     const {article, isLoading} = params
-    const isPreviewing = useIsPreviewing()
+
+    const config = getConfig()
+    const location = useLocation()
+    const slug = location.pathname.replace('/blog/', '')
+
+    const query = useQuery(['Builder-Fetch-blog', slug], () =>
+        fetchOneEntry({
+            model: builderConfig.blogArticleModel,
+            options: {
+                includeRefs: true
+            },
+            query: {
+                data: {
+                    slug
+                }
+            },
+            apiKey: config.app.builder.api
+        })
+    )
+
     if (isLoading) {
         return (
             <Box css={{minHeight: '100vh'}}>
@@ -17,13 +53,13 @@ export const BlogPage = (params) => {
         )
     }
 
-    if (!isPreviewing && !article) {
+    if (!isPreviewing(location.pathname) && !query.data) {
         return <PageNotFound />
     }
 
     return (
         <Box css={{minHeight: '100vh'}}>
-            <BuilderContent
+            <Content
                 content={article}
                 options={{includeRefs: true}}
                 model={builderConfig.blogArticleModel}
@@ -47,16 +83,17 @@ export const BlogPage = (params) => {
                                     author={author?.value?.data || {}}
                                     title={title || 'Untitled'}
                                 />
-                                <BuilderComponent
+                                <Content
                                     model={builderConfig.blogArticleModel}
                                     content={article}
                                     options={{includeRefs: true}}
+                                    apiKey={config.app.builder.api}
                                 />
                             </Container>
                         )
                     )
                 }}
-            </BuilderContent>
+            </Content>
         </Box>
     )
 }

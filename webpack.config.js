@@ -7,7 +7,7 @@ config.forEach((c) => {
         ...c.resolve,
         alias: {
             ...c?.resolve?.alias,
-            '@builder': path.resolve(__dirname, './builder')
+            '~': path.resolve(__dirname, './overrides')
         }
     }
     c.module.rules.push({

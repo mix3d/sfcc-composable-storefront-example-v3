@@ -1,15 +1,28 @@
 /*
- * Copyright (c) 2023, Salesforce, Inc.
+ * Copyright (c) 2022, Salesforce, Inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+
 import React, {useEffect} from 'react'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {useLocation} from 'react-router-dom'
+import {useQuery} from '@tanstack/react-query'
 
 // Components
-import {Box, Button, Stack, Link} from '@salesforce/retail-react-app/app/components/shared/ui'
+import {
+    Box,
+    Button,
+    SimpleGrid,
+    HStack,
+    VStack,
+    Text,
+    Flex,
+    Stack,
+    Container,
+    Link
+} from '@salesforce/retail-react-app/app/components/shared/ui'
 
 // Project Components
 import Hero from '@salesforce/retail-react-app/app/components/hero'
@@ -19,6 +32,7 @@ import ProductScroller from '@salesforce/retail-react-app/app/components/product
 
 // Others
 import {getAssetUrl} from '@salesforce/pwa-kit-react-sdk/ssr/universal/utils'
+import {heroFeatures, features} from '@salesforce/retail-react-app/app/pages/home/data'
 
 //Hooks
 import useEinstein from '@salesforce/retail-react-app/app/hooks/use-einstein'
@@ -27,12 +41,14 @@ import useEinstein from '@salesforce/retail-react-app/app/hooks/use-einstein'
 import {
     MAX_CACHE_AGE,
     HOME_SHOP_PRODUCTS_CATEGORY_ID,
-    HOME_SHOP_PRODUCTS_LIMIT,
-    CUSTOM_HOME_TITLE
-} from '../../constants'
+    HOME_SHOP_PRODUCTS_LIMIT
+} from '@salesforce/retail-react-app/app/constants'
+import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hooks'
 import {useProductSearch} from '@salesforce/commerce-sdk-react'
+
+import {Content, fetchOneEntry} from '@builder.io/sdk-react'
 
 /**
  * This is the home page for Retail React App.
@@ -41,9 +57,10 @@ import {useProductSearch} from '@salesforce/commerce-sdk-react'
  * categories and products, data is from local file.
  */
 const Home = () => {
-    const intl = useIntl()
     const einstein = useEinstein()
     const {pathname} = useLocation()
+
+    const config = getConfig()
 
     // useServerContext is a special hook introduced in v3 PWA Kit SDK.
     // It replaces the legacy `getProps` and provide a react hook interface for SSR.
@@ -54,12 +71,13 @@ const Home = () => {
         res.set('Cache-Control', `s-maxage=${MAX_CACHE_AGE}`)
     }
 
-    const {data: productSearchResult, isLoading} = useProductSearch({
-        parameters: {
-            refine: [`cgid=${HOME_SHOP_PRODUCTS_CATEGORY_ID}`, 'htype=master'],
-            limit: HOME_SHOP_PRODUCTS_LIMIT
-        }
-    })
+    const query = useQuery(['Builder-Fetch-Home'], () =>
+        fetchOneEntry({
+            model: 'page',
+            fields: 'data.url,name',
+            apiKey: config.app.builder.api
+        })
+    )
 
     /**************** Einstein ****************/
     useEffect(() => {
@@ -74,8 +92,29 @@ const Home = () => {
                 keywords="Commerce Cloud, Retail React App, React Storefront"
             />
 
+            <Content model="page" apiKey="YOUR_API_KEY" content={query.data} />
+        </Box>
+    )
+}
+
+Home.getTemplateName = () => 'home'
+
+const OldHomeContent = () => {
+    const intl = useIntl()
+
+    const {data: productSearchResult, isLoading} = useProductSearch({
+        parameters: {
+            refine: [`cgid=${HOME_SHOP_PRODUCTS_CATEGORY_ID}`, 'htype=master'],
+            limit: HOME_SHOP_PRODUCTS_LIMIT
+        }
+    })
+    return (
+        <>
             <Hero
-                title={CUSTOM_HOME_TITLE}
+                title={intl.formatMessage({
+                    defaultMessage: 'The React PWA Starter Store for Retail',
+                    id: 'home.title.react_starter_store'
+                })}
                 img={{
                     src: getAssetUrl('static/img/hero.png'),
                     alt: 'npx pwa-kit-create-app'
@@ -98,6 +137,53 @@ const Home = () => {
                     </Stack>
                 }
             />
+
+            <Section
+                background={'gray.50'}
+                marginX="auto"
+                paddingY={{base: 8, md: 16}}
+                paddingX={{base: 4, md: 8}}
+                borderRadius="base"
+                width={{base: '100vw', md: 'inherit'}}
+                position={{base: 'relative', md: 'inherit'}}
+                left={{base: '50%', md: 'inherit'}}
+                right={{base: '50%', md: 'inherit'}}
+                marginLeft={{base: '-50vw', md: 'auto'}}
+                marginRight={{base: '-50vw', md: 'auto'}}
+            >
+                <SimpleGrid
+                    columns={{base: 1, md: 1, lg: 3}}
+                    spacingX={{base: 1, md: 4}}
+                    spacingY={{base: 4, md: 14}}
+                >
+                    {heroFeatures.map((feature, index) => {
+                        const featureMessage = feature.message
+                        return (
+                            <Link key={index} target="_blank" href={feature.href}>
+                                <Box
+                                    background={'white'}
+                                    boxShadow="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                                    borderRadius={'4px'}
+                                >
+                                    <HStack>
+                                        <Flex
+                                            paddingLeft={6}
+                                            height={24}
+                                            align={'center'}
+                                            justify={'center'}
+                                        >
+                                            {feature.icon}
+                                        </Flex>
+                                        <Text fontWeight="700">
+                                            {intl.formatMessage(featureMessage.title)}
+                                        </Text>
+                                    </HStack>
+                                </Box>
+                            </Link>
+                        )
+                    })}
+                </SimpleGrid>
+            </Section>
 
             {productSearchResult && (
                 <Section
@@ -151,10 +237,91 @@ const Home = () => {
                     </Stack>
                 </Section>
             )}
-        </Box>
+
+            <Section
+                padding={4}
+                paddingTop={32}
+                title={intl.formatMessage({
+                    defaultMessage: 'Features',
+                    id: 'home.heading.features'
+                })}
+                subtitle={intl.formatMessage({
+                    defaultMessage:
+                        'Out-of-the-box features so that you focus only on adding enhancements.',
+                    id: 'home.description.features'
+                })}
+            >
+                <Container maxW={'6xl'} marginTop={10}>
+                    <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={10}>
+                        {features.map((feature, index) => {
+                            const featureMessage = feature.message
+                            return (
+                                <HStack key={index} align={'top'}>
+                                    <VStack align={'start'}>
+                                        <Flex
+                                            width={16}
+                                            height={16}
+                                            align={'center'}
+                                            justify={'left'}
+                                            color={'gray.900'}
+                                            paddingX={2}
+                                        >
+                                            {feature.icon}
+                                        </Flex>
+                                        <Text color={'black'} fontWeight={700} fontSize={20}>
+                                            {intl.formatMessage(featureMessage.title)}
+                                        </Text>
+                                        <Text color={'black'}>
+                                            {intl.formatMessage(featureMessage.text)}
+                                        </Text>
+                                    </VStack>
+                                </HStack>
+                            )
+                        })}
+                    </SimpleGrid>
+                </Container>
+            </Section>
+
+            <Section
+                padding={4}
+                paddingTop={32}
+                title={intl.formatMessage({
+                    defaultMessage: "We're here to help",
+                    id: 'home.heading.here_to_help'
+                })}
+                subtitle={
+                    <>
+                        <>
+                            {intl.formatMessage({
+                                defaultMessage: 'Contact our support staff.',
+                                id: 'home.description.here_to_help'
+                            })}
+                        </>
+                        <br />
+                        <>
+                            {intl.formatMessage({
+                                defaultMessage: 'They will get you to the right place.',
+                                id: 'home.description.here_to_help_line_2'
+                            })}
+                        </>
+                    </>
+                }
+                actions={
+                    <Button
+                        as={Link}
+                        href="https://help.salesforce.com/s/?language=en_US"
+                        target="_blank"
+                        width={'auto'}
+                        paddingX={7}
+                        _hover={{textDecoration: 'none'}}
+                    >
+                        <FormattedMessage defaultMessage="Contact Us" id="home.link.contact_us" />
+                    </Button>
+                }
+                maxWidth={'xl'}
+            />
+        </>
     )
 }
-
-Home.getTemplateName = () => 'home'
 
 export default Home
