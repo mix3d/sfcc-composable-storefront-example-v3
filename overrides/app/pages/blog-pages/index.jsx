@@ -98,28 +98,28 @@ export const BlogPage = (params) => {
     )
 }
 // eslint-disable-next-line
-BlogPage.getProps = async ({res, api, location}) => {
-    console.log(' here ', location.pathname)
-    const slug = location.pathname.split('/')[2]
-    const article = await builder
-        .get(builderConfig.blogArticleModel, {
-            options: {
-                includeRefs: true
-            },
-            query: {
-                data: {
-                    slug
-                }
-            }
-        })
-        .toPromise()
+// BlogPage.getProps = async ({res, api, location}) => {
+//     console.log(' here ', location.pathname)
+//     const slug = location.pathname.split('/')[2]
+//     const article = await builder
+//         .get(builderConfig.blogArticleModel, {
+//             options: {
+//                 includeRefs: true
+//             },
+//             query: {
+//                 data: {
+//                     slug
+//                 }
+//             }
+//         })
+//         .toPromise()
 
-    if (!article && res) {
-        res.status(404)
-    }
+//     if (!article && res) {
+//         res.status(404)
+//     }
 
-    return {article}
-}
+//     return {article}
+// }
 
 BlogPage.propTypes = {
     article: PropTypes.any,

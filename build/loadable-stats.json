@@ -1,17 +1,22 @@
 {
   "name": "client",
-  "hash": "285baca4d0531bff3852",
+  "hash": "38498e88822d7d02b9ac",
   "publicPath": "/mobify/bundle/development/",
-  "outputPath": "/Users/madison/Workspace/retail-react-app/build",
+  "outputPath": "/Users/madison/Workspace/sfcc-composable-storefront-example-v3/build",
   "assetsByChunkName": {
     "main": [
-      "main.js"
+      "main.js",
+      "main.b63b857058cca83442be.hot-update.js"
     ],
     "pages-home": [
       "pages-home.js"
     ],
-    "pages-my-new-route": [
-      "pages-my-new-route.js"
+    "pages-marketing-pages": [
+      "pages-marketing-pages.js"
+    ],
+    "pages-blog-pages": [
+      "pages-blog-pages.js",
+      "pages-blog-pages.b63b857058cca83442be.hot-update.js"
     ],
     "pages-login": [
       "pages-login.js"
@@ -57,7 +62,7 @@
     {
       "type": "asset",
       "name": "vendor.js",
-      "size": 5425497,
+      "size": 5563453,
       "emitted": false,
       "comparedForEmit": false,
       "cached": true,
@@ -84,7 +89,7 @@
     {
       "type": "asset",
       "name": "main.js",
-      "size": 1008012,
+      "size": 1009411,
       "emitted": false,
       "comparedForEmit": false,
       "cached": true,
@@ -447,8 +452,33 @@
     },
     {
       "type": "asset",
+      "name": "pages-blog-pages.js",
+      "size": 27423,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "javascriptModule": false,
+        "related": {
+          "sourceMap": "pages-blog-pages.js.map"
+        }
+      },
+      "chunkNames": [
+        "pages-blog-pages"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "filteredRelated": 1,
+      "chunks": [
+        "pages-blog-pages"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
       "name": "pages-home.js",
-      "size": 11977,
+      "size": 21104,
       "emitted": false,
       "comparedForEmit": false,
       "cached": true,
@@ -467,6 +497,31 @@
       "filteredRelated": 1,
       "chunks": [
         "pages-home"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
+      "name": "pages-marketing-pages.js",
+      "size": 16460,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "javascriptModule": false,
+        "related": {
+          "sourceMap": "pages-marketing-pages.js.map"
+        }
+      },
+      "chunkNames": [
+        "pages-marketing-pages"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "filteredRelated": 1,
+      "chunks": [
+        "pages-marketing-pages"
       ],
       "auxiliaryChunks": []
     },
@@ -522,6 +577,33 @@
     },
     {
       "type": "asset",
+      "name": "pages-blog-pages.b63b857058cca83442be.hot-update.js",
+      "size": 9556,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "hotModuleReplacement": true,
+        "immutable": true,
+        "fullhash": "b63b857058cca83442be",
+        "related": {
+          "sourceMap": "pages-blog-pages.b63b857058cca83442be.hot-update.js.map"
+        }
+      },
+      "chunkNames": [
+        "pages-blog-pages"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "filteredRelated": 1,
+      "chunks": [
+        "pages-blog-pages"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
       "name": "pages-registration.js",
       "size": 8237,
       "emitted": false,
@@ -572,31 +654,6 @@
     },
     {
       "type": "asset",
-      "name": "pages-my-new-route.js",
-      "size": 2742,
-      "emitted": false,
-      "comparedForEmit": false,
-      "cached": true,
-      "info": {
-        "javascriptModule": false,
-        "related": {
-          "sourceMap": "pages-my-new-route.js.map"
-        }
-      },
-      "chunkNames": [
-        "pages-my-new-route"
-      ],
-      "chunkIdHints": [],
-      "auxiliaryChunkNames": [],
-      "auxiliaryChunkIdHints": [],
-      "filteredRelated": 1,
-      "chunks": [
-        "pages-my-new-route"
-      ],
-      "auxiliaryChunks": []
-    },
-    {
-      "type": "asset",
       "name": "pages-login-redirect.js",
       "size": 2018,
       "emitted": false,
@@ -622,6 +679,33 @@
     },
     {
       "type": "asset",
+      "name": "main.b63b857058cca83442be.hot-update.js",
+      "size": 359,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "hotModuleReplacement": true,
+        "immutable": true,
+        "fullhash": "b63b857058cca83442be",
+        "related": {
+          "sourceMap": "main.b63b857058cca83442be.hot-update.js.map"
+        }
+      },
+      "chunkNames": [
+        "main"
+      ],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "filteredRelated": 1,
+      "chunks": [
+        "main"
+      ],
+      "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
       "name": "_1242.js",
       "size": 284,
       "emitted": false,
@@ -642,6 +726,25 @@
         "_1242"
       ],
       "auxiliaryChunks": []
+    },
+    {
+      "type": "asset",
+      "name": "main.b63b857058cca83442be.hot-update.json",
+      "size": 47,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": {
+        "hotModuleReplacement": true,
+        "immutable": true,
+        "fullhash": "b63b857058cca83442be"
+      },
+      "chunkNames": [],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "chunks": [],
+      "auxiliaryChunks": []
     }
   ],
   "namedChunkGroups": {
@@ -657,11 +760,14 @@
         },
         {
           "name": "main.js"
+        },
+        {
+          "name": "main.b63b857058cca83442be.hot-update.js"
         }
       ],
       "filteredAssets": 0,
       "assetsSize": null,
-      "filteredAuxiliaryAssets": 2,
+      "filteredAuxiliaryAssets": 3,
       "auxiliaryAssetsSize": null,
       "children": {},
       "childAssets": {}
@@ -669,10 +775,14 @@
     "pages-home": {
       "name": "pages-home",
       "chunks": [
+        "vendor",
         "vendors-node_modules_salesforce_retail-react-app_app_pages_home_index_jsx",
         "pages-home"
       ],
       "assets": [
+        {
+          "name": "vendor.js"
+        },
         {
           "name": "vendors-node_modules_salesforce_retail-react-app_app_pages_home_index_jsx.js"
         },
@@ -682,24 +792,52 @@
       ],
       "filteredAssets": 0,
       "assetsSize": null,
+      "filteredAuxiliaryAssets": 3,
+      "auxiliaryAssetsSize": null,
+      "children": {},
+      "childAssets": {}
+    },
+    "pages-marketing-pages": {
+      "name": "pages-marketing-pages",
+      "chunks": [
+        "vendor",
+        "pages-marketing-pages"
+      ],
+      "assets": [
+        {
+          "name": "vendor.js"
+        },
+        {
+          "name": "pages-marketing-pages.js"
+        }
+      ],
+      "filteredAssets": 0,
+      "assetsSize": null,
       "filteredAuxiliaryAssets": 2,
       "auxiliaryAssetsSize": null,
       "children": {},
       "childAssets": {}
     },
-    "pages-my-new-route": {
-      "name": "pages-my-new-route",
+    "pages-blog-pages": {
+      "name": "pages-blog-pages",
       "chunks": [
-        "pages-my-new-route"
+        "vendor",
+        "pages-blog-pages"
       ],
       "assets": [
         {
-          "name": "pages-my-new-route.js"
+          "name": "vendor.js"
+        },
+        {
+          "name": "pages-blog-pages.js"
+        },
+        {
+          "name": "pages-blog-pages.b63b857058cca83442be.hot-update.js"
         }
       ],
       "filteredAssets": 0,
       "assetsSize": null,
-      "filteredAuxiliaryAssets": 1,
+      "filteredAuxiliaryAssets": 3,
       "auxiliaryAssetsSize": null,
       "children": {},
       "childAssets": {}
@@ -990,7 +1128,8 @@
     {
       "id": "main",
       "files": [
-        "main.js"
+        "main.js",
+        "main.b63b857058cca83442be.hot-update.js"
       ]
     },
     {
@@ -1006,9 +1145,16 @@
       ]
     },
     {
-      "id": "pages-my-new-route",
+      "id": "pages-marketing-pages",
       "files": [
-        "pages-my-new-route.js"
+        "pages-marketing-pages.js"
+      ]
+    },
+    {
+      "id": "pages-blog-pages",
+      "files": [
+        "pages-blog-pages.js",
+        "pages-blog-pages.b63b857058cca83442be.hot-update.js"
       ]
     },
     {
