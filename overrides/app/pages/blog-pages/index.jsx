@@ -1,49 +1,42 @@
 import React from 'react'
 import PageNotFound from '@salesforce/retail-react-app/app/pages/page-not-found'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
-
+// TODO: replace with the SF internal wrapper ones
 import {Box, Container, Skeleton} from '@chakra-ui/react'
-import PropTypes from 'prop-types'
+
 import builderConfig from '~/builder/map.js'
-
-import BlogCard from '~/builder/blocks/blog-card'
-
+import BlogCard from '~/builder/blocks/blog-card/blog-card.jsx'
 import {useQuery} from '@tanstack/react-query'
-
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 // import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
-import {
-    Content,
-    fetchEntries,
-    fetchOneEntry,
-    isEditing,
-    isPreviewing,
-    getBuilderSearchParams
-} from '@builder.io/sdk-react'
+import {Content, fetchOneEntry, isEditing, isPreviewing} from '@builder.io/sdk-react'
 
-export const BlogPage = (params) => {
-    const {article, isLoading} = params
-
+export const BlogPage = () => {
     const config = getConfig()
     const location = useLocation()
     const slug = location.pathname.replace('/blog/', '')
 
-    const query = useQuery(['Builder-Fetch-blog', slug], () =>
-        fetchOneEntry({
-            model: builderConfig.blogArticleModel,
-            options: {
-                includeRefs: true
-            },
-            query: {
-                data: {
-                    slug
-                }
-            },
-            apiKey: config.app.builder.api
-        })
-    )
+    const {data: blog, isLoading} = useQuery({
+        queryKey: ['Builder-Fetch-blog', slug],
+        queryFn: async () => {
+            const blog = await fetchOneEntry({
+                model: builderConfig.blogArticleModel,
+                query: {
+                    data: {
+                        slug
+                    }
+                },
+                apiKey: config.app.builder.api
+            })
+            console.log('\n\n==============\n', {blog}, '\n\n==============\n')
+            return blog
+        }
+    })
+
+    // TODO: is this the right way to do it?
+    const {title, excerpt, keywords, noIndex, author, image, lastUpdated} = blog?.data || {}
 
     if (isLoading) {
         return (
@@ -53,82 +46,38 @@ export const BlogPage = (params) => {
         )
     }
 
-    if (!isPreviewing(location.pathname) && !query.data) {
+    if (!isPreviewing(location.pathname) && !isLoading && !blog) {
         return <PageNotFound />
     }
 
     return (
         <Box css={{minHeight: '100vh'}}>
-            <Content
-                content={article}
-                options={{includeRefs: true}}
-                model={builderConfig.blogArticleModel}
-            >
-                {(content, loading, full) => {
-                    const {title, excerpt, keywords, noIndex, author, image} = content || {}
-                    return (
-                        content && (
-                            <Container maxW={'7xl'} p="12">
-                                <Seo
-                                    title={title}
-                                    description={excerpt}
-                                    noIndex={noIndex}
-                                    keywords={keywords?.join(', ')}
-                                />
-                                <BlogCard
-                                    date={new Date(full.lastUpdated || Date.now())}
-                                    image={image}
-                                    keywords={keywords || []}
-                                    excerpt={excerpt || 'lorem Ipsum'}
-                                    author={author?.value?.data || {}}
-                                    title={title || 'Untitled'}
-                                />
-                                <Content
-                                    model={builderConfig.blogArticleModel}
-                                    content={article}
-                                    options={{includeRefs: true}}
-                                    apiKey={config.app.builder.api}
-                                />
-                            </Container>
-                        )
-                    )
-                }}
-            </Content>
+            {blog && (
+                <Container maxW={'7xl'} p="12">
+                    <Seo
+                        title={title}
+                        description={excerpt}
+                        noIndex={noIndex}
+                        keywords={keywords?.join(', ')}
+                    />
+                    <BlogCard
+                        date={new Date(lastUpdated || Date.now())}
+                        image={image}
+                        keywords={keywords || []}
+                        excerpt={excerpt || 'lorem Ipsum'}
+                        author={author?.value?.data || {}}
+                        title={title || 'Untitled'}
+                    />
+                    <Content
+                        model={builderConfig.blogArticleModel}
+                        content={blog}
+                        enrich={true}
+                        apiKey={config.app.builder.api}
+                    />
+                </Container>
+            )}
         </Box>
     )
-}
-// eslint-disable-next-line
-// BlogPage.getProps = async ({res, api, location}) => {
-//     console.log(' here ', location.pathname)
-//     const slug = location.pathname.split('/')[2]
-//     const article = await builder
-//         .get(builderConfig.blogArticleModel, {
-//             options: {
-//                 includeRefs: true
-//             },
-//             query: {
-//                 data: {
-//                     slug
-//                 }
-//             }
-//         })
-//         .toPromise()
-
-//     if (!article && res) {
-//         res.status(404)
-//     }
-
-//     return {article}
-// }
-
-BlogPage.propTypes = {
-    article: PropTypes.any,
-    /*
-     * Indicated that `getProps` has been called but has yet to complete.
-     *
-     * Notes: This prop is internally provided.
-     */
-    isLoading: PropTypes.bool
 }
 
 export default BlogPage

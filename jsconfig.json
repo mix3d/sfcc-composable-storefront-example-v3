@@ -4,5 +4,11 @@
         "baseUrl": "./",
         "paths": {
             "~/*": ["./overrides/*"],
-    }
+            "@salesforce/*": ["./node_modules/@salesforce/*"]
+        },
+        "checkJs": true, // Enables type checking in JavaScript files
+        "jsx": "react", // Only include if you're working with React
+        "moduleResolution": "Bundler"
+    },
+    "include": ["./overrides/**/*", "./config/**/*", "./node_modules/@salesforce/**/*"]
 }

@@ -1,26 +1,71 @@
-import React from 'react'
-
-import {useHistory, useLocation, useParams} from 'react-router-dom'
-import PageNotFound from '@salesforce/retail-react-app/app/pages/page-not-found'
+import React, {useMemo, useState, useEffect} from 'react'
+import loadable from '@loadable/component'
+import {useLocation} from 'react-router-dom'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
 import {Box, Skeleton} from '@chakra-ui/react'
-import PropTypes from 'prop-types'
+import {useQuery} from '@tanstack/react-query'
 
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 import {
     Content,
-    fetchEntries,
     fetchOneEntry,
     isEditing,
     isPreviewing,
-    getBuilderSearchParams
+    subscribeToEditor
 } from '@builder.io/sdk-react'
 import builderConfig from '~/builder/map.js'
+import {customComponents} from '~/builder/blocks'
+import {isServer} from '@salesforce/retail-react-app/app/utils/utils'
 
-export const MarketingPage = ({isLoading}) => {
+const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
+
+// const isServer = typeof window === 'undefined'
+
+export const MarketingPage = () => {
     const location = useLocation()
-    const isPreviewing = isPreviewing(location.pathname)
+    const config = getConfig()
+
+    const [previewData, setPreviewData] = useState(null)
+
+    const slug = location.pathname
+
+    const {
+        data: queryData,
+        isLoading,
+        isError
+    } = useQuery({
+        queryKey: ['Builder-Fetch-marketing', slug],
+        queryFn: async () => {
+            const result = await fetchOneEntry({
+                model: builderConfig.pageModel,
+                // not neded on fetchOneEntry
+                // options: {
+                //     enrich: true
+                // },
+                url: slug,
+                // query: {},
+                apiKey: config.app.builder.api
+            })
+            return result
+        },
+        onSuccess: (data) => {
+            setPreviewData(data)
+        },
+        enabled: !isServer
+    })
+
+    const data = useMemo(() => {
+        return previewData ?? queryData
+    }, [queryData, previewData])
+
+    useEffect(() => {
+        const unsubscribe = subscribeToEditor(builderConfig.pageModel, (data) =>
+            setPreviewData(data)
+        )
+        return () => unsubscribe()
+    }, [])
+
     if (isLoading) {
         return (
             <Box css={{minHeight: '100vh'}}>
@@ -29,12 +74,12 @@ export const MarketingPage = ({isLoading}) => {
         )
     }
 
-    if (!isPreviewing && !page.data) {
+    if (!isPreviewing(location.pathname) && isError) {
         return <PageNotFound />
     }
     let header = <></>
-    if (page.data) {
-        const {title, description, keywords, noIndex} = page.data
+    if (data) {
+        const {title, description, keywords, noIndex} = data
         header = (
             <Seo
                 title={title}
@@ -48,40 +93,43 @@ export const MarketingPage = ({isLoading}) => {
     return (
         <Box css={{minHeight: '100vh'}}>
             {header}
-            <Component
+            <Content
                 model={builderConfig.pageModel}
-                content={page}
-                options={{includeRefs: true}}
+                content={data}
+                apiKey={config.app.builder.api}
+                enrich={true}
+                customComponents={customComponents}
             />
+            {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         </Box>
     )
 }
 
 // eslint-disable-next-line
-MarketingPage.getProps = async ({res, api, location}) => {
-    const page = await builder
-        .get(builderConfig.pageModel, {
-            apiKey: builderConfig.apiKey,
-            url: location.pathname,
-            options: {
-                includeRefs: true
-            }
-        })
-        .toPromise()
-        .catch((e) => {
-            console.error('Error getting page', e)
-        })
+// MarketingPage.getProps = async ({res, api, location}) => {
+//     const page = await builder
+//         .get(builderConfig.pageModel, {
+//             apiKey: builderConfig.apiKey,
+//             url: location.pathname,
+//             options: {
+//                 includeRefs: true
+//             }
+//         })
+//         .toPromise()
+//         .catch((e) => {
+//             console.error('Error getting page', e)
+//         })
 
-    if (!page && res) {
-        res.status(404)
-    }
+//     if (!page && res) {
+//         res.status(404)
+//     }
 
-    return {page}
-}
+//     return {page}
+// }
 
-MarketingPage.propTypes = {
-    page: PropTypes.any,
-    isLoading: PropTypes.bool
-}
+// MarketingPage.propTypes = {
+//     page: PropTypes.any,
+//     isLoading: PropTypes.bool
+// }
 
 export default MarketingPage

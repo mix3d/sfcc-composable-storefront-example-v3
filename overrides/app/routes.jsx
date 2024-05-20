@@ -32,11 +32,11 @@ const routes = [
         path: '/blog/**',
         component: BlogPages
     },
+    ..._routes.filter((route) => route.path !== '*'),
     {
         path: '*',
         component: MarketingPages
-    },
-    ..._routes
+    }
 ]
 
 export default () => {
