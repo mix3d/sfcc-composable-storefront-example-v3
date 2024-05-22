@@ -7,6 +7,7 @@ register('insertMenu', {
     name: 'Salesforce Products Components',
     items: [{name: 'ProductBox'}, {name: 'ProductsGrid'}, {name: 'EinsteinProductsGrid'}]
 })
+
 register('insertMenu', {
     name: 'Blog',
     items: [{name: 'BlogCard'}]

@@ -14,8 +14,7 @@ import {
     isPreviewing,
     subscribeToEditor
 } from '@builder.io/sdk-react'
-import builderConfig from '~/builder/map.js'
-import {customComponents} from '~/builder/blocks'
+import {customComponents, builderConfig} from '~/builder'
 
 const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
 

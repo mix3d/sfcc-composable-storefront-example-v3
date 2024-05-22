@@ -49,6 +49,7 @@ import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hook
 import {useProductSearch} from '@salesforce/commerce-sdk-react'
 
 import {Content, fetchOneEntry} from '@builder.io/sdk-react'
+import {customComponents, builderConfig} from '~/builder'
 
 /**
  * This is the home page for Retail React App.
@@ -91,7 +92,13 @@ const Home = () => {
                 description="Commerce Cloud Retail React App"
                 keywords="Commerce Cloud, Retail React App, React Storefront"
             />
-            <Content model="page" apiKey="YOUR_API_KEY" content={query.data} />
+            <Content
+                model={builderConfig.pageModel}
+                content={query.data}
+                apiKey={config.app.builder.api}
+                enrich={true}
+                customComponents={customComponents}
+            />
         </Box>
     )
 }

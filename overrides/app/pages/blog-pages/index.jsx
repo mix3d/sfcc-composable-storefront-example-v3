@@ -5,13 +5,13 @@ import Seo from '@salesforce/retail-react-app/app/components/seo'
 // TODO: replace with the SF internal wrapper ones
 import {Box, Container, Skeleton} from '@chakra-ui/react'
 
-import builderConfig from '~/builder/map.js'
 import BlogCard from '~/builder/blocks/blog-card/blog-card.jsx'
 import {useQuery} from '@tanstack/react-query'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 // import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
 import {Content, fetchOneEntry, isEditing, isPreviewing} from '@builder.io/sdk-react'
+import {customComponents, builderConfig} from '~/builder'
 
 export const BlogPage = () => {
     const config = getConfig()
@@ -76,6 +76,7 @@ export const BlogPage = () => {
                         content={blog}
                         enrich={true}
                         apiKey={config.app.builder.api}
+                        customComponents={customComponents}
                     />
                 </Container>
             )}
