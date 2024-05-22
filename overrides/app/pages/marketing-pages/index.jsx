@@ -28,14 +28,14 @@ export const MarketingPage = () => {
 
     const [previewData, setPreviewData] = useState(null)
 
-    const slug = location.pathname
+    const urlPath = location.pathname
 
     const {
         data: queryData,
         isLoading,
         isError
     } = useQuery({
-        queryKey: ['Builder-Fetch-marketing', slug],
+        queryKey: ['Builder-Fetch-marketing', urlPath],
         queryFn: async () => {
             const result = await fetchOneEntry({
                 model: builderConfig.pageModel,
@@ -43,7 +43,7 @@ export const MarketingPage = () => {
                 // options: {
                 //     enrich: true
                 // },
-                url: slug,
+                userAttributes: {urlPath},
                 // query: {},
                 apiKey: config.app.builder.api
             })
@@ -51,8 +51,7 @@ export const MarketingPage = () => {
         },
         onSuccess: (data) => {
             setPreviewData(data)
-        },
-        enabled: !isServer
+        }
     })
 
     const data = useMemo(() => {
@@ -77,22 +76,17 @@ export const MarketingPage = () => {
     if (!isPreviewing(location.pathname) && isError) {
         return <PageNotFound />
     }
-    let header = <></>
-    if (data) {
-        const {title, description, keywords, noIndex} = data
-        header = (
-            <Seo
-                title={title}
-                description={description}
-                noIndex={noIndex}
-                keywords={keywords?.join(', ')}
-            />
-        )
-    }
 
     return (
         <Box css={{minHeight: '100vh'}}>
-            {header}
+            {data && (
+                <Seo
+                    title={data.title}
+                    description={data.description}
+                    noIndex={data.noIndex}
+                    keywords={data.keywords?.join(', ')}
+                />
+            )}
             <Content
                 model={builderConfig.pageModel}
                 content={data}
@@ -100,7 +94,6 @@ export const MarketingPage = () => {
                 enrich={true}
                 customComponents={customComponents}
             />
-            {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         </Box>
     )
 }

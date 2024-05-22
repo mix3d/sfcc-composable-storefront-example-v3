@@ -7,7 +7,7 @@ const ProductDetail = loadable(() => import('./product-detail'), {fallback})
 
 export const ProductDetailDefinition = {
     component: ProductDetail,
-    name: 'ProductDetail',
+    name: 'ProductBox', // for backwards compatibility with the existing CMS code
     image: 'https://unpkg.com/css.gg@2.0.0/icons/svg/box.svg',
     inputs: [
         {

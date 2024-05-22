@@ -18,7 +18,11 @@ export const BlogPage = () => {
     const location = useLocation()
     const slug = location.pathname.replace('/blog/', '')
 
-    const {data: blog, isLoading} = useQuery({
+    const {
+        data: blog,
+        isLoading,
+        isError
+    } = useQuery({
         queryKey: ['Builder-Fetch-blog', slug],
         queryFn: async () => {
             const blog = await fetchOneEntry({
@@ -30,7 +34,6 @@ export const BlogPage = () => {
                 },
                 apiKey: config.app.builder.api
             })
-            console.log('\n\n==============\n', {blog}, '\n\n==============\n')
             return blog
         }
     })
@@ -46,7 +49,7 @@ export const BlogPage = () => {
         )
     }
 
-    if (!isPreviewing(location.pathname) && !isLoading && !blog) {
+    if ((!isPreviewing(location.pathname) && !isLoading && !blog) || isError) {
         return <PageNotFound />
     }
 
