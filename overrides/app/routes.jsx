@@ -23,16 +23,20 @@ const MarketingPages = loadable(() => import('./pages/marketing-pages'))
 const BlogPages = loadable(() => import('./pages/blog-pages'))
 
 const routes = [
+    // Override the home page
     {
         path: '/',
         component: Home,
         exact: true
     },
+    // Add a new route for blog pages
     {
         path: '/blog/**',
         component: BlogPages
     },
+    // copy the rest of the routes from the original app, minus the catchall route
     ..._routes.filter((route) => route.path !== '*'),
+    // Add a catchall route for marketing pages that also handles 404's
     {
         path: '*',
         component: MarketingPages
