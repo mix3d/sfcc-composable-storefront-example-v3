@@ -16,7 +16,6 @@ import {
 } from '@builder.io/sdk-react'
 import builderConfig from '~/builder/map.js'
 import {customComponents} from '~/builder/blocks'
-import {isServer} from '@salesforce/retail-react-app/app/utils/utils'
 
 const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
 
@@ -39,7 +38,7 @@ export const MarketingPage = () => {
         queryFn: async () => {
             const result = await fetchOneEntry({
                 model: builderConfig.pageModel,
-                // not neded on fetchOneEntry
+                // not needed on fetchOneEntry
                 // options: {
                 //     enrich: true
                 // },

@@ -74,7 +74,7 @@ const Home = () => {
     const query = useQuery(['Builder-Fetch-Home'], () =>
         fetchOneEntry({
             model: 'page',
-            fields: 'data.url,name',
+            userAttributes: {urlPath: '/'},
             apiKey: config.app.builder.api
         })
     )
@@ -91,7 +91,6 @@ const Home = () => {
                 description="Commerce Cloud Retail React App"
                 keywords="Commerce Cloud, Retail React App, React Storefront"
             />
-
             <Content model="page" apiKey="YOUR_API_KEY" content={query.data} />
         </Box>
     )
