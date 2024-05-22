@@ -1,6 +1,6 @@
-import config from '@salesforce/pwa-kit-dev/configs/webpack/config'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import path from 'path'
+const config = require('@salesforce/pwa-kit-dev/configs/webpack/config')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path')
 
 config.forEach((c) => {
     c.resolve = {
