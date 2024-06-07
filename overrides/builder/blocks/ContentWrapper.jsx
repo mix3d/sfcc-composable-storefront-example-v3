@@ -16,6 +16,7 @@ export const BuilderContentWrapperGenerator = ({queryKey, model, options = {}, s
                     model,
                     apiKey: config.app.builder.api,
                     ...options
+                    // enrich is on by default for fetchOneEntry()
                 })
             }
         })

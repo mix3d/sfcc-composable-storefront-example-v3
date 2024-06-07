@@ -1,6 +1,8 @@
-# PWA Kit Generated App
+# Builder.io integrated with Composable Storefront
 
-Welcome to the PWA Kit!
+Welcome to the Builder-integrated PWA Kit project! 
+
+This repository should serve as an example of how to integrate Builder.io's Visual CMS with Salesforce's Composable Storefront / PWAKit platform.
 
 ## Getting Started
 
@@ -8,6 +10,11 @@ Welcome to the PWA Kit!
 
 -   Node 18 or later
 -   npm 9 or later
+
+### Important Notes about this Example Implementation
+
+Due to an issue with PWAKit's SDKs, it is necessary to patch the SDK to support running the project in an iframe, which is how Builder's CMS loads the visual preview in the editor. See [this Community PWAKit POC repo](https://github.com/SalesforceCommerceCloud/composable-storefront-pocs/tree/main) and this thread in the [Unofficial SFCC Slack channel](https://sfcc-unofficial.slack.com/archives/C02KUCHDEKH/p1717452731269259) for more details, the Patch file is attributed to the hard work of others.
+
 
 ### Run the Project Locally
 
