@@ -78,7 +78,6 @@ const Header = ({
     onWishlistClick = noop,
     ...props
 }) => {
-    const config = getConfig()
     const intl = useIntl()
     const {
         derivedData: {totalItems},

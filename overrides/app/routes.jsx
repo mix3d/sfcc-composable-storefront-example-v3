@@ -21,6 +21,7 @@ const fallback = <Skeleton height="75vh" width="100%" />
 const Home = loadable(() => import('./pages/home'), {fallback})
 const MarketingPages = loadable(() => import('./pages/marketing-pages'))
 const BlogPages = loadable(() => import('./pages/blog-pages'))
+const ProductDetail = loadable(() => import('./pages/product-detail'), {fallback})
 
 const routes = [
     // Override the home page
@@ -34,8 +35,12 @@ const routes = [
         path: '/blog/**',
         component: BlogPages
     },
-    // copy the rest of the routes from the original app, minus the catchall route
-    ..._routes.filter((route) => route.path !== '*'),
+    {
+        path: '/product/:productId',
+        component: ProductDetail
+    },
+    // copy the rest of the routes from the original app, minus some pre-handled routes
+    ..._routes.filter((route) => !['/', '*', '/product/:productId'].includes(route.path)),
     // Add a catchall route for marketing pages that also handles 404's
     {
         path: '*',

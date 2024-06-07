@@ -10,7 +10,7 @@ import {useQuery} from '@tanstack/react-query'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 // import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
-import {Content, fetchOneEntry, isEditing, isPreviewing} from '@builder.io/sdk-react'
+import {Content, fetchOneEntry, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
 
 export const BlogPage = () => {

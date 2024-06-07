@@ -7,13 +7,7 @@ import {useQuery} from '@tanstack/react-query'
 
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
-import {
-    Content,
-    fetchOneEntry,
-    isEditing,
-    isPreviewing,
-    subscribeToEditor
-} from '@builder.io/sdk-react'
+import {Content, fetchOneEntry, isPreviewing, subscribeToEditor} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
 
 const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
@@ -94,32 +88,5 @@ export const MarketingPage = () => {
         </Box>
     )
 }
-
-// eslint-disable-next-line
-// MarketingPage.getProps = async ({res, api, location}) => {
-//     const page = await builder
-//         .get(builderConfig.pageModel, {
-//             apiKey: builderConfig.apiKey,
-//             url: location.pathname,
-//             options: {
-//                 includeRefs: true
-//             }
-//         })
-//         .toPromise()
-//         .catch((e) => {
-//             console.error('Error getting page', e)
-//         })
-
-//     if (!page && res) {
-//         res.status(404)
-//     }
-
-//     return {page}
-// }
-
-// MarketingPage.propTypes = {
-//     page: PropTypes.any,
-//     isLoading: PropTypes.bool
-// }
 
 export default MarketingPage

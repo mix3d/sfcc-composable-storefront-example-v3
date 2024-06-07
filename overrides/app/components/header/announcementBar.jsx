@@ -17,16 +17,18 @@ const AnnouncementBar = () => {
         }
     })
 
-    if (!announcement || !isPreviewing()) return null
-    return (
-        <Content
-            model={builderConfig.announcementBarModel}
-            content={announcement}
-            enrich={true}
-            apiKey={config.app.builder.api}
-            customComponents={customComponents}
-        />
-    )
+    if (announcement || isPreviewing()) {
+        return (
+            <Content
+                model={builderConfig.announcementBarModel}
+                content={announcement}
+                enrich={true}
+                apiKey={config.app.builder.api}
+                customComponents={customComponents}
+            />
+        )
+    }
+    return <></>
 }
 
 export default AnnouncementBar

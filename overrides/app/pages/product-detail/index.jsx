@@ -50,7 +50,7 @@ import {useWishList} from '@salesforce/retail-react-app/app/hooks/use-wish-list'
 
 // Builder.io
 import {Content, isPreviewing} from '@builder.io/sdk-react'
-import {builderConfig} from '~/builder'
+import {customComponents, builderConfig} from '~/builder'
 import {useFetchOneEntry} from '~/builder/blocks/ContentWrapper'
 
 const ProductDetail = () => {
@@ -102,7 +102,8 @@ const ProductDetail = () => {
             userAttributes: {
                 product: urlParams.get('pid') || productId
             }
-        }
+        },
+        enabled: product?.id && typeof window !== 'undefined'
     })
 
     // Note: Since category needs id from product detail, it can't be server side rendered atm
@@ -474,6 +475,7 @@ const ProductDetail = () => {
                         model={builderConfig.productFooterModel}
                         content={productFooter}
                         enrich={true}
+                        customComponents={customComponents}
                     />
                 )}
             </Stack>
