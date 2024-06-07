@@ -35,7 +35,7 @@ export const MarketingPage = () => {
     } = useQuery({
         queryKey: ['Builder-Fetch-marketing', urlPath],
         queryFn: async () => {
-            const result = await fetchOneEntry({
+            return await fetchOneEntry({
                 model: builderConfig.pageModel,
                 // not needed on fetchOneEntry
                 // options: {
@@ -45,7 +45,6 @@ export const MarketingPage = () => {
                 // query: {},
                 apiKey: config.app.builder.api
             })
-            return result
         },
         onSuccess: (data) => {
             setPreviewData(data)

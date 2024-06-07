@@ -25,7 +25,7 @@ export const BlogPage = () => {
     } = useQuery({
         queryKey: ['Builder-Fetch-blog', slug],
         queryFn: async () => {
-            const blog = await fetchOneEntry({
+            return await fetchOneEntry({
                 model: builderConfig.blogArticleModel,
                 query: {
                     data: {
@@ -34,7 +34,6 @@ export const BlogPage = () => {
                 },
                 apiKey: config.app.builder.api
             })
-            return blog
         }
     })
 
