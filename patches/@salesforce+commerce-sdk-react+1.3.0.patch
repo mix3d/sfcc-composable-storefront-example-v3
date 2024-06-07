@@ -1,0 +1,30 @@
+diff --git a/node_modules/@salesforce/commerce-sdk-react/utils.js b/node_modules/@salesforce/commerce-sdk-react/utils.js
+index 52f4256..c6e6533 100644
+--- a/node_modules/@salesforce/commerce-sdk-react/utils.js
++++ b/node_modules/@salesforce/commerce-sdk-react/utils.js
+@@ -57,6 +57,7 @@ exports.getParentOrigin = getParentOrigin;
+ const isOriginTrusted = origin => {
+   return Boolean(origin && (window.location.hostname === 'localhost' ? origin === DEVELOPMENT_ORIGIN // Development
+   : _constant.IFRAME_HOST_ALLOW_LIST.includes(origin)) // Production
++    || origin?.includes('builder.io') // builder's Visual CMS iframe
+   );
+ };
+ 
+@@ -70,7 +72,7 @@ const getCookieSameSiteAttribute = () => {
+   if (!onClient()) return;
+   const isLocalHost = window.location.hostname === 'localhost';
+   const parentOrigin = getParentOrigin();
+-  return !isLocalHost && isOriginTrusted(parentOrigin) ? 'none' : 'Lax';
++  return isLocalHost || isOriginTrusted(parentOrigin) ? 'none' : 'Lax';
+ };
+ 
+ /**
+@@ -83,7 +85,7 @@ const getDefaultCookieAttributes = () => {
+     // Deployed sites will always be HTTPS, but the local dev server is served over HTTP.
+     // Ideally, this would be `secure: true`, because Chrome and Firefox both treat
+     // localhost as a Secure context. But Safari doesn't, so here we are.
+-    secure: !onClient() || window.location.protocol === 'https:',
++    secure: true,
+     // By default, Chrome does not allow cookies to be sent/read when the code is loaded in
+     // an iframe (e.g storefront preview). Setting sameSite to "none" loosens that
+     // restriction, but we only want to do so when when the iframe parent is in our allow
