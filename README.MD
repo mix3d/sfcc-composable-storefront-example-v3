@@ -2,7 +2,27 @@
 
 Welcome to the Builder-integrated PWA Kit project! 
 
-This repository should serve as an example of how to integrate Builder.io's Visual CMS with Salesforce's Composable Storefront / PWAKit platform.
+This repository should serve as an example of how to integrate Builder.io's Visual CMS with Salesforce's Composable Storefront / PWAKit platform. There should be little added on top of the base Composable reference storefront, making integration with an existing site quick and easy.
+
+Note: This project serves as an integration example, and is not an officially supported project starter.
+
+### Notable Changes
+-  Builder space API key stored in the `/config/[site].js` files
+-  Patch file to add approved domain to the iframe allow-list in commerce-sdk-react
+-  Header slots
+-  Page route overrides that include Builder content areas
+   -  Homepage
+   -  Marketing pages
+   -  Blog pages
+   -  PLP
+   -  PDP
+-  Example global custom components and menu registration in `_app-config` wrapper override
+
+TODO: 
+- Datamodel driven Nav menu
+- Merchandize nav menu area
+- PLP list tile Content insertion
+- More Product Components
 
 ## Getting Started
 
@@ -10,11 +30,10 @@ This repository should serve as an example of how to integrate Builder.io's Visu
 
 -   Node 18 or later
 -   npm 9 or later
+-   [Salesforce Commerce API client](https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/setting-up-api-access.html)
+-   [A Builder.io account](https://builder.io/signup)
 
-### Important Notes about this Example Implementation
-
-Due to an issue with PWAKit's SDKs, it is necessary to patch the SDK to support running the project in an iframe, which is how Builder's CMS loads the visual preview in the editor. See [this Community PWAKit POC repo](https://github.com/SalesforceCommerceCloud/composable-storefront-pocs/tree/main) and this thread in the [Unofficial SFCC Slack channel](https://sfcc-unofficial.slack.com/archives/C02KUCHDEKH/p1717452731269259) for more details, the Patch file is attributed to the hard work of others.
-
+### 
 
 ### Run the Project Locally
 
@@ -23,6 +42,13 @@ npm start
 ```
 
 This will open a browser and your storefront will be running on http://localhost:3000
+
+Login https://builder.io 
+
+### Important Notes about this Example Implementation
+
+Due to an issue with PWAKit's SDKs, it is necessary to patch the SDK to support running the project in an iframe, which is how Builder's CMS loads the visual preview in the editor. See [this Community PWAKit POC repo](https://github.com/SalesforceCommerceCloud/composable-storefront-pocs/tree/main) and this thread in the [Unofficial SFCC Slack channel](https://sfcc-unofficial.slack.com/archives/C02KUCHDEKH/p1717452731269259) for more details, the Patch file is attributed to the hard work of others.
+
 
 ### Deploy to Managed Runtime
 
@@ -40,7 +66,9 @@ This version of the application uses [Template Extensibility](https://developer.
 
 ## 🌍 Localization
 
-See the [Localization README.md](./packages/template-retail-react-app/translations/README.md) for important setup instructions for localization.
+See the [Localization README.md](./packages/template-retail-react-app/translations/README.md) for important setup instructions for app localization.
+
+For CMS localization, read Builder's [documentation on localization patterns](https://www.builder.io/c/docs/localization-intro).
 
 ## 📖 Documentation
 
