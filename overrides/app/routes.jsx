@@ -19,9 +19,10 @@ const fallback = <Skeleton height="75vh" width="100%" />
 // Create your pages here and add them to the routes array
 // Use loadable to split code into smaller js chunks
 const Home = loadable(() => import('./pages/home'), {fallback})
-const MarketingPages = loadable(() => import('./pages/marketing-pages'))
+const MarketingPages = loadable(() => import('./pages/marketing-pages'), {fallback})
 const BlogPages = loadable(() => import('./pages/blog-pages'))
 const ProductDetail = loadable(() => import('./pages/product-detail'), {fallback})
+const ProductList = loadable(() => import('./pages/product-list'), {fallback})
 
 const routes = [
     // Override the home page
@@ -35,18 +36,35 @@ const routes = [
         path: '/blog/**',
         component: BlogPages
     },
+    // Override the product detail page
     {
         path: '/product/:productId',
         component: ProductDetail
     },
-    // copy the rest of the routes from the original app, minus some pre-handled routes
-    ..._routes.filter((route) => !['/', '*', '/product/:productId'].includes(route.path)),
+    {
+        path: '/search',
+        component: ProductList
+    },
+    {
+        path: '/category/:categoryId',
+        component: ProductList
+    },
     // Add a catchall route for marketing pages that also handles 404's
+    // Make sure your catchall route is the last route in the array
     {
         path: '*',
         component: MarketingPages
     }
 ]
+
+const overridePaths = routes.map((route) => route.path)
+
+// Insert the overridden routes before the template paths, but use our custom catchall route at the end
+routes.splice(
+    routes.length - 1,
+    0,
+    ..._routes.filter((route) => !overridePaths.includes(route.path))
+)
 
 export default () => {
     const config = getConfig()

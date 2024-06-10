@@ -23,6 +23,9 @@ TODO:
 - Merchandize nav menu area
 - PLP list tile Content insertion
 - More Product Components
+- Localization examples
+  - Page Level
+  - Field Level
 
 ## Getting Started
 
