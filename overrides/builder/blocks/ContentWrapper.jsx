@@ -61,7 +61,7 @@ export const useFetchOneEntry = ({queryKey, options, enabled = true}) => {
 }
 
 // FetchOneEntry but also listen to PageModel changes
-export const useFetchOneEntrWithListener = ({queryKey, options, enabled = true}) => {
+export const useFetchOneEntryWithListener = ({queryKey, options, enabled = true}) => {
     const apiKey = getConfig().app.builder.api
     const [previewData, setPreviewData] = useState(null)
     const {
