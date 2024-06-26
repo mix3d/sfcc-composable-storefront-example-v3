@@ -47,7 +47,7 @@ module.exports = {
         },
         //Builder.io settings
         builder: {
-            api: 'd1ed12c3338144da8dd6b63b35d14c30'
+            api: '698e53a94674420e8ed125c7da07e4a8'
         }
     },
     // This list contains server-side only libraries that you don't want to be compiled by webpack

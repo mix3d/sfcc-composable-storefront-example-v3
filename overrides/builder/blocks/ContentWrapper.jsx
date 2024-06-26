@@ -2,11 +2,18 @@ import React, {useMemo, useState, useEffect} from 'react'
 import {useQuery} from '@tanstack/react-query'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import {Content, fetchOneEntry, isPreviewing, subscribeToEditor} from '@builder.io/sdk-react'
-import {customComponents} from '~/builder'
+import {customComponents as defaultCustomComponents} from '~/builder'
 
 // One approach, a Component Generator to make creating Builder.io content fetching components simple
-// Always has all customComponents available
-export const BuilderContentWrapperGenerator = ({queryKey, model, options = {}, skeleton}) => {
+// Defaults to all customComponents available, but can take a customComponents prop to override
+// Useful when you only have a single content area with no additional JSX is used
+export const BuilderSingleEntryContentGenerator = ({
+    queryKey,
+    model,
+    options = {enrich: true},
+    skeleton,
+    customComponents = defaultCustomComponents
+}) => {
     const BuilderComponent = () => {
         const config = getConfig()
         const {data, isLoading, isError} = useQuery({
@@ -37,10 +44,10 @@ export const BuilderContentWrapperGenerator = ({queryKey, model, options = {}, s
 }
 
 // A more Hooks-based approach, for React-style fetching, must render the Content component manually
-// Get to choose Content props manually
+// Pros: Get to choose Content props manually
 export const useFetchOneEntry = ({queryKey, options, enabled = true}) => {
     const apiKey = getConfig().app.builder.api
-    const {data, isLoading, isError} = useQuery({
+    const query = useQuery({
         queryKey: [
             ...(typeof queryKey === 'string'
                 ? [queryKey]
@@ -57,18 +64,14 @@ export const useFetchOneEntry = ({queryKey, options, enabled = true}) => {
         enabled
     })
 
-    return {data, isLoading, isError, apiKey}
+    return {...query, apiKey}
 }
 
 // FetchOneEntry but also listen to PageModel changes
 export const useFetchOneEntryWithListener = ({queryKey, options, enabled = true}) => {
     const apiKey = getConfig().app.builder.api
     const [previewData, setPreviewData] = useState(null)
-    const {
-        data: queryData,
-        isLoading,
-        isError
-    } = useQuery({
+    const {data: queryData, ...queryRest} = useQuery({
         queryKey: [
             ...(typeof queryKey === 'string'
                 ? [queryKey]
@@ -97,5 +100,5 @@ export const useFetchOneEntryWithListener = ({queryKey, options, enabled = true}
         return () => unsubscribe()
     }, [])
 
-    return {data: memoData, isLoading, isError, apiKey}
+    return {data: memoData, ...queryRest, apiKey}
 }

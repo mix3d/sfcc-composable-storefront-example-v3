@@ -8,18 +8,26 @@ Note: This project serves as an integration example, and is not an officially su
 
 ### Notable Changes
 -  Builder space API key stored in the `/config/[site].js` files
--  Patch file to add approved domain to the iframe allow-list in commerce-sdk-react
--  Header slots
+-  Patch file to modify approved domain in the iframe allow-list in `commerce-sdk-react`
+   -  Necessary due to the MRT preview mode that assumes all iframes are preview mode.
+-  `ssr.js` additions to Content Security Policy (CSP) to enable Builder support.
+-  Webpack config changes to support importing/requiring CSS files.
+
+### Builder Content Areas
 -  Page route overrides that include Builder content areas
    -  Homepage
    -  Marketing pages
    -  Blog pages
    -  PLP
    -  PDP
--  Example global custom components and menu registration in `_app-config` wrapper override
+-  Global Header slots
+-  Custom Components:
+   -  Einstein recommenders
+   -  
+-  Example global custom components and Builder menu registration in `_app-config` wrapper override
 
 TODO: 
-- Datamodel driven Nav menu
+- Datamodel driven Nav menu, footer
 - Merchandize nav menu area
 - PLP list tile Content insertion
 - More Product Components

@@ -48,6 +48,7 @@ const {handler} = runtime.createHandler(options, (app) => {
                         // Default source for product images - replace with your CDN
                         '*.commercecloud.salesforce.com',
                         'via.placeholder.com',
+                        // Builder CDN support
                         'data:',
                         '*.builder.io',
                         'builder.io'
@@ -55,19 +56,20 @@ const {handler} = runtime.createHandler(options, (app) => {
                     'script-src': [
                         // Used by the service worker in /worker/main.js
                         'storage.googleapis.com',
+                        // Builder requires unsafe-eval and unsafe-inline to run custom code defined in the CMS
                         "'self'",
                         "'unsafe-eval'",
-                        'storage.googleapis.com',
-                        '*.builder.io',
-                        // Builder requires unsafe-inline to run custom code defined in the CMS
-                        "'unsafe-inline'"
+                        "'unsafe-inline'",
+                        '*.builder.io'
                     ],
                     'connect-src': [
                         // Connect to Einstein APIs
                         'api.cquotient.com',
+                        // Connect to Builder APIs
                         '*.builder.io',
                         'builder.io'
                     ],
+                    // Allow iframes from Builder.io for the Visual Editor's iframe preview
                     'frame-ancestors': ['*.builder.io', 'builder.io', 'localhost']
                 }
             }
@@ -86,58 +88,7 @@ const {handler} = runtime.createHandler(options, (app) => {
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
     app.get('*', runtime.render)
-
-    // temporarily removed, to confirm if still an issue with newer SDKs?
-    // app.get('*', (req, res, next) => {
-    //     const interceptedResponse = interceptMethodCalls(res, 'send', ([result]) => {
-    //         const styles = extractABTestingStyles(result)
-    //         return [result.replace('<body>', `<body><style>${styles}</style>`)]
-    //     })
-    //     return runtime.render(req, interceptedResponse, next)
-    // })
 })
-
-/**
- * See this issue for more details https://github.com/emotion-js/emotion/issues/2040
- * Chakra using emotion which render styles inside template tags causing it not to apply when rendering
- * A/B test variations on the server, this fixes this issue by extracting those styles and appending them to body
- */
-function extractABTestingStyles(body) {
-    let globalStyles = ''
-
-    if (body.includes('<template')) {
-        const $ = cheerio.load(body)
-        const templates = $('template')
-        templates.toArray().forEach((element) => {
-            const str = $(element).html()
-            const styles = cheerio.load(String(str))('style')
-            globalStyles += styles
-                .toArray()
-                .map((el) => $(el).html())
-                .join(' ')
-        })
-    }
-    return globalStyles
-}
-
-function interceptMethodCalls(obj, methodName, fn) {
-    return new Proxy(obj, {
-        get(target, prop) {
-            // (A)
-            if (prop === methodName) {
-                return new Proxy(target[prop], {
-                    apply: (target, thisArg, argumentsList) => {
-                        // (B)
-                        const result = fn(argumentsList)
-                        return Reflect.apply(target, thisArg, result)
-                    }
-                })
-            } else {
-                return Reflect.get(target, prop)
-            }
-        }
-    })
-}
 
 // SSR requires that we export a single handler function called 'get', that
 // supports AWS use of the server that we created above.
