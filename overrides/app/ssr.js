@@ -68,8 +68,12 @@ const {handler} = runtime.createHandler(options, (app) => {
                         '*.builder.io',
                         'builder.io'
                     ],
-                    // Allow iframes from Builder.io for the Visual Editor's iframe preview
-                    'frame-ancestors': ['*.builder.io', 'builder.io', 'localhost']
+                    'frame-ancestors': [
+                        // Allow iframes from Builder.io for the Visual Editor's iframe preview
+                        '*.builder.io',
+                        'builder.io',
+                        'localhost'
+                    ]
                 }
             }
         })

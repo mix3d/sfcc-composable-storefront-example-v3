@@ -26,7 +26,7 @@ Note: This project serves as an integration example, and is not an officially su
    -  
 -  Example global custom components and Builder menu registration in `_app-config` wrapper override
 
-TODO: 
+TODO: Build examples for
 - Datamodel driven Nav menu, footer
 - Merchandize nav menu area
 - PLP list tile Content insertion
@@ -34,6 +34,8 @@ TODO:
 - Localization examples
   - Page Level
   - Field Level
+- Design Tokens leveraging Chakra's template styles 
+- Convert example to Typescript
 
 ## Getting Started
 

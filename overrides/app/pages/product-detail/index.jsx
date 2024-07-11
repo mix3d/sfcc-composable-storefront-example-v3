@@ -103,7 +103,7 @@ const ProductDetail = () => {
                 product: urlParams.get('pid') || productId
             }
         },
-        enabled: product?.id && typeof window !== 'undefined'
+        enabled: !!product?.id
     })
 
     // Note: Since category needs id from product detail, it can't be server side rendered atm
