@@ -6,12 +6,13 @@ import Seo from '@salesforce/retail-react-app/app/components/seo'
 import {Box, Container, Skeleton} from '@chakra-ui/react'
 
 import BlogCard from '~/builder/blocks/blog-card/blog-card.jsx'
-import {useQuery} from '@tanstack/react-query'
+
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 // import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
-import {Content, fetchOneEntry, isPreviewing} from '@builder.io/sdk-react'
+import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
+import {useFetchOneEntryWithListener} from '~/builder/blocks/ContentWrapper'
 
 export const BlogPage = () => {
     const config = getConfig()
@@ -22,18 +23,15 @@ export const BlogPage = () => {
         data: blog,
         isLoading,
         isError
-    } = useQuery({
+    } = useFetchOneEntryWithListener({
         queryKey: ['Builder-Fetch-blog', slug],
-        queryFn: async () => {
-            return await fetchOneEntry({
-                model: builderConfig.blogArticleModel,
-                query: {
-                    data: {
-                        slug
-                    }
-                },
-                apiKey: config.app.builder.api
-            })
+        options: {
+            model: builderConfig.blogArticleModel,
+            query: {
+                data: {
+                    slug
+                }
+            }
         }
     })
 

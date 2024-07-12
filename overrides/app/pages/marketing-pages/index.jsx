@@ -1,60 +1,31 @@
-import React, {useMemo, useState, useEffect} from 'react'
+import React from 'react'
 import loadable from '@loadable/component'
 import {useLocation} from 'react-router-dom'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
 import {Box, Skeleton} from '@chakra-ui/react'
-import {useQuery} from '@tanstack/react-query'
 
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
-import {Content, fetchOneEntry, isPreviewing, subscribeToEditor} from '@builder.io/sdk-react'
+import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
+import {useFetchOneEntryWithListener} from '~/builder/blocks/ContentWrapper'
 
 const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
-
-// const isServer = typeof window === 'undefined'
 
 export const MarketingPage = () => {
     const location = useLocation()
     const config = getConfig()
 
-    const [previewData, setPreviewData] = useState(null)
-
     const urlPath = location.pathname
 
-    const {
-        data: queryData,
-        isLoading,
-        isError
-    } = useQuery({
+    const {data, isLoading, isError} = useFetchOneEntryWithListener({
         queryKey: ['Builder-Fetch-marketing', urlPath],
-        queryFn: async () => {
-            return await fetchOneEntry({
-                model: builderConfig.pageModel,
-                // not needed on fetchOneEntry
-                // options: {
-                //     enrich: true
-                // },
-                userAttributes: {urlPath},
-                // query: {},
-                apiKey: config.app.builder.api
-            })
-        },
-        onSuccess: (data) => {
-            setPreviewData(data)
+        options: {
+            model: builderConfig.pageModel,
+            userAttributes: {urlPath},
+            apiKey: config.app.builder.api
         }
     })
-
-    const data = useMemo(() => {
-        return previewData ?? queryData
-    }, [queryData, previewData])
-
-    useEffect(() => {
-        const unsubscribe = subscribeToEditor(builderConfig.pageModel, (data) =>
-            setPreviewData(data)
-        )
-        return () => unsubscribe()
-    }, [])
 
     if (isLoading) {
         return (

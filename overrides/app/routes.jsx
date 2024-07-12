@@ -22,7 +22,8 @@ const Home = loadable(() => import('./pages/home'), {fallback})
 const MarketingPages = loadable(() => import('./pages/marketing-pages'), {fallback})
 const BlogPages = loadable(() => import('./pages/blog-pages'))
 const ProductDetail = loadable(() => import('./pages/product-detail'), {fallback})
-const ProductList = loadable(() => import('./pages/product-list'), {fallback})
+// Not needed with this example
+// const ProductList = loadable(() => import('./pages/product-list'), {fallback})
 
 const routes = [
     // Override the home page
@@ -41,14 +42,17 @@ const routes = [
         path: '/product/:productId',
         component: ProductDetail
     },
-    {
-        path: '/search',
-        component: ProductList
-    },
-    {
-        path: '/category/:categoryId',
-        component: ProductList
-    },
+
+    // We accomplished PLP Headers with overridding the product-list/partials/above-page-header.jsx file only!
+    // {
+    //     path: '/search',
+    //     component: ProductList
+    // },
+    // {
+    //     path: '/category/:categoryId',
+    //     component: ProductList
+    // },
+
     // Add a catchall route for marketing pages that also handles 404's
     // Make sure your catchall route is the last route in the array
     {

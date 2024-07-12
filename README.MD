@@ -31,6 +31,7 @@ Note: This project serves as an integration example, and is not an officially su
 -  Example Builder menu registration in `_app-config` wrapper override
 
 TODO: Build examples for
+- SEO from Builder on pages
 - Datamodel driven Nav menu, footer
 - Merchandize nav menu area
 - PLP list tile Content insertion
@@ -40,6 +41,7 @@ TODO: Build examples for
   - Field Level
 - Design Tokens leveraging Chakra's template styles 
 - Convert example to Typescript
+- Aligning Chakra's Mobile-first breakpoints with Builder's defined breakpoints
 
 ## Getting Started
 
