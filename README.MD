@@ -4,14 +4,17 @@ Welcome to the Builder-integrated PWA Kit project!
 
 This repository should serve as an example of how to integrate Builder.io's Visual CMS with Salesforce's Composable Storefront / PWAKit platform. There should be little added on top of the base Composable reference storefront, making integration with an existing site quick and easy.
 
+This approach is also compatible without Template Overrides, everything inside overrides folder will match a full exit PWAKit project, but Overrides was chosen to reduce the noise for this example.
+
 Note: This project serves as an integration example, and is not an officially supported project starter.
+
 
 ### Notable Changes
 -  Builder space API key stored in the `/config/[site].js` files
 -  Patch file to modify approved domain in the iframe allow-list in `commerce-sdk-react`
    -  Necessary due to the MRT preview mode that assumes all iframes are preview mode.
 -  `ssr.js` additions to Content Security Policy (CSP) to enable Builder support.
--  Webpack config changes to support importing/requiring CSS files.
+-  Webpack config changes to support importing/requiring CSS files (not required for Builder support).
 
 ### Builder Content Areas
 -  Page route overrides that include Builder content areas
@@ -23,8 +26,9 @@ Note: This project serves as an integration example, and is not an officially su
 -  Global Header slots
 -  Custom Components:
    -  Einstein recommenders
-   -  
--  Example global custom components and Builder menu registration in `_app-config` wrapper override
+   -  Blog content
+   -  PDP Product wrapper
+-  Example Builder menu registration in `_app-config` wrapper override
 
 TODO: Build examples for
 - Datamodel driven Nav menu, footer
