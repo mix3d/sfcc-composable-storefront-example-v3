@@ -5,9 +5,9 @@ import {fetchEntries, fetchOneEntry, isPreviewing, subscribeToEditor} from '@bui
 
 const createQueryKeyArray = (stringOrArray) => {
     if (!stringOrArray) throw new Error('queryKey is required')
-    if (typeof stringOrArray !== 'string' && !Array.isArray(stringOrArray))
-        throw new Error('queryKey must be a string or array')
-    return typeof stringOrArray === 'string' ? [stringOrArray] : stringOrArray
+    if (typeof stringOrArray === 'string') return [stringOrArray]
+    if (Array.isArray(stringOrArray)) return stringOrArray
+    throw new Error('queryKey must be a string or array')
 }
 const fetchHookGenerator =
     (fetchFunction) =>
