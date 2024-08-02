@@ -8,7 +8,7 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
-import {useFetchOneEntryWithListener} from '~/builder/blocks/ContentWrapper'
+import {useFetchOneEntry} from '~/builder/hooks'
 
 const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
 
@@ -18,7 +18,7 @@ export const MarketingPage = () => {
 
     const urlPath = location.pathname
 
-    const {data, isLoading, isError} = useFetchOneEntryWithListener({
+    const {data, isLoading, isError} = useFetchOneEntry({
         queryKey: ['Builder-Fetch-marketing', urlPath],
         options: {
             model: builderConfig.pageModel,

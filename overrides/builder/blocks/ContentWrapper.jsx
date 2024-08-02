@@ -67,38 +67,22 @@ export const useFetchOneEntry = ({queryKey, options, enabled = true}) => {
     return {...query, apiKey}
 }
 
-// FetchOneEntry but also listen to PageModel changes
+// Enhance FetchOneEntry to also listen to Model changes
+// This is required for live previewing Models (not Visual data)
 export const useFetchOneEntryWithListener = ({queryKey, options, enabled = true}) => {
-    const apiKey = getConfig().app.builder.api
     const [previewData, setPreviewData] = useState(null)
-    const {data: queryData, ...queryRest} = useQuery({
-        queryKey: [
-            ...(typeof queryKey === 'string'
-                ? [queryKey]
-                : Array.isArray(queryKey)
-                ? queryKey
-                : ['Builder-Fetch-Content'])
-        ],
-        queryFn: async () => {
-            return await fetchOneEntry({
-                apiKey,
-                ...options
-            })
-        },
-        onSuccess: (data) => {
-            setPreviewData(data)
-        },
-        enabled
-    })
+    const {data: queryData, ...queryRest} = useFetchOneEntry({queryKey, options, enabled})
+
+    useEffect(() => {
+        if (!isPreviewing()) return
+        // subscribeToEditor() returns an unsubscribe cleanup function
+        // Run this on the useEffect cleanup to avoid memory leaks
+        return subscribeToEditor(options.model, (data) => setPreviewData(data))
+    }, [])
 
     const memoData = useMemo(() => {
         return previewData ?? queryData
     }, [queryData, previewData])
 
-    useEffect(() => {
-        const unsubscribe = subscribeToEditor(options.model, (data) => setPreviewData(data))
-        return () => unsubscribe()
-    }, [])
-
-    return {data: memoData, ...queryRest, apiKey}
+    return {data: memoData, ...queryRest}
 }

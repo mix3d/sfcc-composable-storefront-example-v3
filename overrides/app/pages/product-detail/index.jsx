@@ -51,7 +51,7 @@ import {useWishList} from '@salesforce/retail-react-app/app/hooks/use-wish-list'
 // Builder.io
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
-import {useFetchOneEntry} from '~/builder/blocks/ContentWrapper'
+import {useFetchOneEntry} from '~/builder/hooks'
 
 const ProductDetail = () => {
     const {formatMessage} = useIntl()

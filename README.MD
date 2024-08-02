@@ -9,7 +9,7 @@ This approach is also compatible without Template Overrides, everything inside o
 Note: This project serves as an integration example, and is not an officially supported project starter.
 
 
-### Notable Changes
+### Notable Changes to PWAKit
 -  Builder space API key stored in the `/config/[site].js` files
 -  Patch file to modify approved domain in the iframe allow-list in `commerce-sdk-react`
    -  Necessary due to the MRT preview mode that assumes all iframes are preview mode.
@@ -28,7 +28,8 @@ Note: This project serves as an integration example, and is not an officially su
    -  Einstein recommenders
    -  Blog content
    -  PDP Product wrapper
--  Example Builder menu registration in `_app-config` wrapper override
+-  Example Builder insert menu registration in `_app-config` wrapper override
+-  Recommended Content Fetching patterns in `builder/hooks/fetchWrappers.js`
 
 TODO: Build examples for
 - SEO from Builder on pages

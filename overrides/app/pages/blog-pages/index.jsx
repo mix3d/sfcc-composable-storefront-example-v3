@@ -12,7 +12,7 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 // import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
-import {useFetchOneEntryWithListener} from '~/builder/blocks/ContentWrapper'
+import {useFetchOneEntry} from '~/builder/hooks'
 
 export const BlogPage = () => {
     const config = getConfig()
@@ -23,7 +23,7 @@ export const BlogPage = () => {
         data: blog,
         isLoading,
         isError
-    } = useFetchOneEntryWithListener({
+    } = useFetchOneEntry({
         queryKey: ['Builder-Fetch-blog', slug],
         options: {
             model: builderConfig.blogArticleModel,

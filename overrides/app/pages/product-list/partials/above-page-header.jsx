@@ -12,7 +12,7 @@ import {useLocation, useParams} from 'react-router-dom'
 // Builder.io
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
-import {useFetchOneEntry} from '~/builder/blocks/ContentWrapper'
+import {useFetchOneEntry} from '~/builder/hooks'
 // import {useSearchParams} from '@salesforce/retail-react-app/app/hooks'
 
 const AbovePageHeader = () => {
