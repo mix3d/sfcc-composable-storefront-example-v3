@@ -14,7 +14,7 @@ Note: This project serves as an integration example, and is not an officially su
 -  Patch file to modify approved domain in the iframe allow-list in `commerce-sdk-react`
    -  Necessary due to the MRT preview mode that assumes all iframes are preview mode.
 -  `ssr.js` additions to Content Security Policy (CSP) to enable Builder support.
--  Webpack config changes to support importing/requiring CSS files (not required for Builder support).
+-  Webpack config changes to add an `alias` for `~/path/to/file` handling (so you don't need to do deeply nested relative imports like `../../../path/to/file`), and supports importing/requiring CSS files (not required for Builder support but common usecase that PWAKit doesn't handle OOB).
 
 ### Builder Content Areas
 -  Page route overrides that include Builder content areas
