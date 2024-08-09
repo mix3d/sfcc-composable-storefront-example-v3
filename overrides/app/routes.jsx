@@ -22,6 +22,7 @@ const Home = loadable(() => import('./pages/home'), {fallback})
 const MarketingPages = loadable(() => import('./pages/marketing-pages'), {fallback})
 const BlogPages = loadable(() => import('./pages/blog-pages'))
 const ProductDetail = loadable(() => import('./pages/product-detail'), {fallback})
+const EditorPreview = loadable(() => import('./pages/preview'), {fallback})
 // Not needed with this example
 // const ProductList = loadable(() => import('./pages/product-list'), {fallback})
 
@@ -41,6 +42,11 @@ const routes = [
     {
         path: '/product/:productId',
         component: ProductDetail
+    },
+    // Add a new route for previewing models, like Symbols
+    {
+        path: '/preview/:modelName',
+        component: EditorPreview
     },
 
     // We accomplished PLP Headers with overridding the product-list/partials/above-page-header.jsx file only!
