@@ -48,10 +48,11 @@ TODO: Build examples for
 
 ### Requirements
 
--   Node 18 or later
--   npm 9 or later
--   [Salesforce Commerce API client](https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/setting-up-api-access.html)
--   [A Builder.io account](https://builder.io/signup)
+- Node 18 or later
+- npm 9 or later
+- [Salesforce Commerce API Public Client Id](https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/setting-up-api-access.html)
+  - The Builder <> SFCC Plugin only supports a Public TokenId at the time of writing. PWAkit can still be instantiated with a Private TokenId.
+- [A Builder.io account](https://builder.io/signup)
 
 ### 
 
