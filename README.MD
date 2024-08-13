@@ -1,6 +1,6 @@
-# Builder.io integrated with Composable Storefront
+# Builder.io integrated with Composable Storefront v3 Template 
 
-Welcome to the Builder-integrated PWA Kit project! 
+Welcome to the Builder-integrated PWA Kit example project! 
 
 This repository should serve as an example of how to integrate Builder.io's Visual CMS with Salesforce's Composable Storefront / PWAKit platform. There should be little added on top of the base Composable reference storefront, making integration with an existing site quick and easy.
 
