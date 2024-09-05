@@ -44,6 +44,13 @@ TODO: Build examples for
 - Convert example to Typescript
 - Aligning Chakra's Mobile-first breakpoints with Builder's defined breakpoints
 
+### 🚨 Important Notes about this Example Implementation
+
+Due to an issue with PWAKit's SDKs, it is necessary to patch the SDK to support running the project in an iframe, which is how Builder's CMS loads the visual preview in the editor. See [this Community PWAKit POC repo](https://github.com/SalesforceCommerceCloud/composable-storefront-pocs/tree/main) and this thread in the [Unofficial SFCC Slack channel](https://sfcc-unofficial.slack.com/archives/C02KUCHDEKH/p1717452731269259) for more details, the Patch file is attributed to the hard work of others.
+
+**Additional Caveats:**
+- PWAKit uses ChakraUI, which in turn leverages Emotion's CSS library. There is an odd behavior with Emotion during SSR that places the CSS classes adjacent to the Chakra component *during SSR*, but moves them to the `<head>` during Hydration / Client-side Rendering. The impact when joined with Builder is that Builder will also place CSS styles adjacent to the component. Because Builder wraps Custom Components by default, this usually isn't an issue, but when combined with the `noWrap: true` option, Chakra's component styles will have specificity over Builder's styles *during* SSR (they are placed lower in the DOM), but post-hydration Builder's styles have specificity (Chakra styles moved to `<head>`). This can cause flashes of style/CLS issues. We recommend leaving `noWrap` to it's default `false` value when registering styled Chakra components as Custom Components.  
+
 ## Getting Started
 
 ### Requirements
@@ -54,21 +61,17 @@ TODO: Build examples for
   - The Builder <> SFCC Plugin only supports a Public TokenId at the time of writing. PWAkit can still be instantiated with a Private TokenId.
 - [A Builder.io account](https://builder.io/signup)
 
-### 
-
 ### Run the Project Locally
+Get your Builder API key from your space, and replace in the configs/default.js file.
 
 ```bash
+npm install
 npm start
 ```
 
 This will open a browser and your storefront will be running on http://localhost:3000
 
-Login https://builder.io 
-
-### Important Notes about this Example Implementation
-
-Due to an issue with PWAKit's SDKs, it is necessary to patch the SDK to support running the project in an iframe, which is how Builder's CMS loads the visual preview in the editor. See [this Community PWAKit POC repo](https://github.com/SalesforceCommerceCloud/composable-storefront-pocs/tree/main) and this thread in the [Unofficial SFCC Slack channel](https://sfcc-unofficial.slack.com/archives/C02KUCHDEKH/p1717452731269259) for more details, the Patch file is attributed to the hard work of others.
+Login https://builder.io to create and publish content. 
 
 
 ### Deploy to Managed Runtime
