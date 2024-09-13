@@ -52,6 +52,12 @@ const {handler} = runtime.createHandler(options, (app) => {
                         '*.builder.io',
                         'builder.io'
                     ],
+                    'media-src': [
+                        // Local/static Media assets
+                        "'self'",
+                        // Builder Media asset support
+                        '*.builder.io',
+                    ],
                     'script-src': [
                         // Used by the service worker in /worker/main.js
                         'storage.googleapis.com',
