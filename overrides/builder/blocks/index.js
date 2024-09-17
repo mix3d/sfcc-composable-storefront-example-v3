@@ -4,6 +4,7 @@ import {ProductDetailDefinition} from './product-detail'
 import {ProductsGridDefinition} from './products-grid'
 import {AccordionDefinition} from './accordion'
 import {IconDefinition} from './icon-picker'
+import {ButtonDefinition} from './chakra'
 
 // This is the global registry for your custom components.
 // Passing this array of component definitions to a Builder.io <Content> component surfaces them into the Visual Editor
@@ -15,5 +16,6 @@ export const customComponents = [
     ProductDetailDefinition,
     ProductsGridDefinition,
     AccordionDefinition,
-    IconDefinition
+    IconDefinition,
+    ButtonDefinition
 ]

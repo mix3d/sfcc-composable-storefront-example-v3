@@ -6,20 +6,37 @@ import {Blocks} from '@builder.io/sdk-react'
 
 // TEMPORARY ACCORDION COMPONENT THAT SHOULD BE REPLACED WITH THE BUILDER.IO ACCORDION COMPONENT ONCE PUBLISHED
 export const Accordion = (props) => {
-    const {items, oneAtATime, grid, defaultOpen, builderBlock, gridRowWidth, useChildrenForItems} =
-        props
+    const {
+        items,
+        builderBlock,
+        defaultOpen,
+        oneAtATime,
+        grid,
+        gridRowWidth,
+        useChildrenForItems,
+        ...restProps
+    } = props
     // Initialize visibility state for each item
-    const [visibility, setVisibility] = useState(items.map(() => true))
+    const [visibility, setVisibility] = useState(items.map(() => defaultOpen))
 
     const toggleVisibility = (index) => {
-        setVisibility((prevVisibility) => {
-            const newVisibility = [...prevVisibility]
-            newVisibility[index] = !newVisibility[index]
-            return newVisibility
-        })
+        if (oneAtATime) {
+            setVisibility((prevVisibility) => {
+                const newVisibility = prevVisibility.map(() => false)
+                newVisibility[index] = !prevVisibility[index]
+                return newVisibility
+            })
+        } else {
+            setVisibility((prevVisibility) => {
+                const newVisibility = [...prevVisibility]
+                newVisibility[index] = !newVisibility[index]
+                return newVisibility
+            })
+        }
     }
+
     return (
-        <div>
+        <div {...restProps}>
             {items.map((item, index) => (
                 <div key={index}>
                     <div onClick={() => toggleVisibility(index)}>
@@ -38,7 +55,7 @@ export const Accordion = (props) => {
                     )}
                 </div>
             ))}
-            <pre>
+            {/* <pre>
                 {JSON.stringify(
                     {
                         oneAtATime,
@@ -50,7 +67,7 @@ export const Accordion = (props) => {
                     null,
                     2
                 )}
-            </pre>
+            </pre> */}
         </div>
     )
 }
@@ -168,10 +185,18 @@ export const AccordionDefinition = {
         {
             name: 'oneAtATime',
             helperText:
-                'Only allow opening one at a time (collapse all others when new item openned)',
+                'Only allow opening one at a time (collapse all others when new item opened)',
             type: 'boolean',
             defaultValue: false
         },
+        {
+            name: 'defaultOpen',
+            helperText:
+                'Should they be open by default? oneAtATime is also true, only the first will be open by default',
+            type: 'boolean',
+            defaultValue: false
+        },
+        // TODO: implement options after here
         {
             name: 'grid',
             helperText: 'Display as a grid',

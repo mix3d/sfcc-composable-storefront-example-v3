@@ -4,8 +4,8 @@ import {register} from '@builder.io/sdk-react'
 
 // Register Editor Menus for custom components with Builder to show in the Visual Editor.
 // This can be run at the page level too, to register components for a specific page / view.
-// If Custom Components are registed but not referenced in a custom Insert Menu,
-//  then they will all lump together in a single "Custom Components" menu.
+// Any Custom Components that are registed but not specifically referenced in a custom Insert Menu,
+//  will all lump together in a single "Custom Components" menu.
 register('insertMenu', {
     name: 'Salesforce Products Components',
     items: [{name: 'ProductBox'}, {name: 'ProductsGrid'}, {name: 'EinsteinProductsGrid'}]
