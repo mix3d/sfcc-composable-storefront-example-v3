@@ -1,19 +1,15 @@
 import React from 'react'
-import {useQuery} from '@tanstack/react-query'
-import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
-import {Content, fetchOneEntry, isPreviewing} from '@builder.io/sdk-react'
+import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
+import {useFetchOneEntry} from '~/builder/hooks'
 
 const AnnouncementBar = () => {
-    const config = getConfig()
-    const {data: announcement} = useQuery({
+    const {data: announcement, apiKey} = useFetchOneEntry({
         queryKey: ['Builder-Fetch-AnnouncementBar'],
-        queryFn: async () => {
-            return await fetchOneEntry({
-                model: builderConfig.announcementBarModel,
-                cacheSeconds: 120,
-                apiKey: config.app.builder.api
-            })
+        options: {
+            model: builderConfig.announcementBarModel,
+            // an example for how to use cacheSeconds for longer Builder CDN caching
+            cacheSeconds: 120
         }
     })
 
@@ -23,7 +19,7 @@ const AnnouncementBar = () => {
                 model={builderConfig.announcementBarModel}
                 content={announcement}
                 enrich={true}
-                apiKey={config.app.builder.api}
+                apiKey={apiKey}
                 customComponents={customComponents}
             />
         )
