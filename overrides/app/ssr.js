@@ -59,7 +59,7 @@ const {handler} = runtime.createHandler(options, (app) => {
                         // Local/static Media assets
                         "'self'",
                         // Builder Media asset support
-                        '*.builder.io',
+                        '*.builder.io'
                     ],
                     'script-src': [
                         // Used by the service worker in /worker/main.js
