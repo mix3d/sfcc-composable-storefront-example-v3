@@ -1,13 +1,12 @@
 /*
- * Copyright (c) 2021, salesforce.com, inc.
- * All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * A Wrapper component for fetching a list of Products by ID,
+ * and converting to a similar format as the ProductSearch API provides.
+ * The useProducts hook results don't match the useProductSearch format, which most PWAKit components expect.
  */
 import React, {useState, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {useIntl} from 'react-intl'
-import {SimpleGrid, Button} from '@salesforce/retail-react-app/app/components/shared/ui'
+import {Button} from '@salesforce/retail-react-app/app/components/shared/ui'
 import {
     useProducts,
     useCustomerId,
@@ -25,13 +24,11 @@ import {
 
 import {useWishList} from '@salesforce/retail-react-app/app/hooks/use-wish-list'
 import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation'
-import ProductTile, {
-    Skeleton as ProductTileSkeleton
-} from '@salesforce/retail-react-app/app/components/product-tile'
 
-const numberOfSkeletonItems = 3
+// THIS IS A HACKY FUNCTION
+import convertUseProductsToUseProductSearchFormat from '~/builder/utils/convertUseProductsToUseProductSearchFormat'
 
-const ProductsGrid = ({productIds}) => {
+const ProductsProvider = ({productIds, children}) => {
     const {formatMessage} = useIntl()
     const toast = useToast()
     const navigate = useNavigation()
@@ -46,9 +43,7 @@ const ProductsGrid = ({productIds}) => {
     }, [products])
 
     const customerId = useCustomerId()
-
     const [wishlistLoading, setWishlistLoading] = useState([])
-
     const {mutateAsync: createCustomerProductListItem} = useShopperCustomersMutation(
         'createCustomerProductListItem'
     )
@@ -136,72 +131,21 @@ const ProductsGrid = ({productIds}) => {
         )
     }
 
-    const isPageLoading = isProductsLoading || isWishlistLoading
+    const isLoading = isProductsLoading || isWishlistLoading
 
-    return (
-        <SimpleGrid columns={[2, 2, 3, 3]} spacingX={4} spacingY={{base: 12, lg: 16}}>
-            {isPageLoading
-                ? new Array(productIds?.length || numberOfSkeletonItems)
-                      .fill(0)
-                      .map((_, index) => (
-                          <ProductTileSkeleton
-                              key={index}
-                              data-testid="product-scroller-item-skeleton"
-                          />
-                      ))
-                : convertedProducts.map((product) => {
-                      const isInWishlist = !!wishlist?.customerProductListItems?.find(
-                          (item) => item.productId === product.id
-                      )
-
-                      return (
-                          <ProductTile
-                              data-testid={`sf-product-tile-${product.id}`}
-                              key={product.id}
-                              product={product}
-                              enableFavourite={true}
-                              isFavourite={isInWishlist}
-                              onFavouriteToggle={(isFavourite) => {
-                                  const action = isFavourite
-                                      ? addItemToWishlist
-                                      : removeItemFromWishlist
-                                  return action(product)
-                              }}
-                              dynamicImageProps={{
-                                  widths: ['70vw', '70vw', '40vw', '30vw']
-                              }}
-                          />
-                      )
-                  })}
-        </SimpleGrid>
-    )
+    return children({
+        isLoading,
+        productIds,
+        products: convertedProducts,
+        wishlist,
+        addItemToWishlist,
+        removeItemFromWishlist
+    })
 }
 
-ProductsGrid.propTypes = {
-    productIds: PropTypes.any
+ProductsProvider.propTypes = {
+    productIds: PropTypes.any,
+    children: PropTypes.func
 }
 
-// the useProducts hook returns an array of products in a different format than the useProductSearch hook
-// this function attempts to map the useProducts format to the useProductSearch format, to work with the ProductTile component.
-// STRONGLY encourage looking for a better way to do this!
-function convertUseProductsToUseProductSearchFormat(product) {
-    const largeImage =
-        product.imageGroups.find((group) => group.viewType === 'large')?.images[0] || {}
-
-    return {
-        currency: product.currency,
-        image: {
-            alt: largeImage.title ?? largeImage.alt ?? '',
-            disBaseLink: largeImage.disBaseLink ?? '',
-            link: largeImage.link ?? '',
-            title: largeImage.title ?? ''
-        },
-        price: product.price,
-        productId: product.id,
-        hitType: product.type.master ? 'master' : 'variant',
-        name: product.name,
-        productName: product.name
-    }
-}
-
-export default ProductsGrid
+export default ProductsProvider

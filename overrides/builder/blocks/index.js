@@ -2,6 +2,7 @@ import {BlogCardDefinition} from './blog-card'
 import {EinsteinProductsGridDefinition} from './einstein-products-grid'
 import {ProductDetailDefinition} from './product-detail'
 import {ProductsGridDefinition} from './products-grid'
+import {ProductsScrollerDefinition} from './products-scroller'
 import {AccordionDefinition} from './accordion'
 import {IconDefinition} from './icon-picker'
 import {ButtonDefinition} from './chakra'
@@ -15,6 +16,7 @@ export const customComponents = [
     EinsteinProductsGridDefinition,
     ProductDetailDefinition,
     ProductsGridDefinition,
+    ProductsScrollerDefinition,
     AccordionDefinition,
     IconDefinition,
     ButtonDefinition
