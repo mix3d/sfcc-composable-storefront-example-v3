@@ -2,27 +2,23 @@ import React from 'react'
 import PageNotFound from '@salesforce/retail-react-app/app/pages/page-not-found'
 import {useLocation} from 'react-router-dom'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
-// TODO: replace with the SF internal wrapper ones
-import {Box, Container, Skeleton} from '@chakra-ui/react'
+import {Box, Container, Skeleton} from '@salesforce/retail-react-app/app/components/shared/ui'
 
 import BlogCard from '~/builder/blocks/blog-card/blog-card.jsx'
 
-import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
-
-// import {BuilderComponent, builder, useIsPreviewing, BuilderContent} from '@builder.io/react'
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
 import {useFetchOneEntry} from '~/builder/hooks'
 
 export const BlogPage = () => {
-    const config = getConfig()
     const location = useLocation()
     const slug = location.pathname.replace('/blog/', '')
 
     const {
         data: blog,
         isLoading,
-        isError
+        isError,
+        apiKey
     } = useFetchOneEntry({
         queryKey: ['Builder-Fetch-blog', slug],
         options: {
@@ -72,7 +68,7 @@ export const BlogPage = () => {
                         model={builderConfig.blogArticleModel}
                         content={blog}
                         enrich={true}
-                        apiKey={config.app.builder.api}
+                        apiKey={apiKey}
                         customComponents={customComponents}
                     />
                 </Container>

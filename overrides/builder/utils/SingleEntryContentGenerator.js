@@ -14,7 +14,8 @@ export const SingleEntryContentGenerator = ({
     queryKey,
     options,
     enabled = true,
-    skeleton = null,
+    skeletonComponent = null,
+    errorComponent = null,
     customComponents = defaultCustomComponents
 }) => {
     const BuilderComponent = () => {
@@ -22,8 +23,8 @@ export const SingleEntryContentGenerator = ({
 
         if ((!data && !isLoading) || !isPreviewing()) return null
         // OPTIONAL: handle error state to meet your requirements
-        if (isError) return null
-        if (!isPreviewing() && isLoading && skeleton) return skeleton
+        if (isError) return errorComponent ?? null
+        if (!isPreviewing() && isLoading && skeletonComponent) return skeletonComponent
 
         return (
             <Content

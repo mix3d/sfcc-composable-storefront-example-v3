@@ -1,24 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Box} from '@chakra-ui/react'
-import {useQuery} from '@tanstack/react-query'
-import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
-import {Content, fetchOneEntry, isPreviewing} from '@builder.io/sdk-react'
+import {Box} from '@salesforce/retail-react-app/app/components/shared/ui'
+import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
+import {useFetchOneEntry} from '~/builder/hooks'
 
 const CartUpsell = ({product}) => {
-    const config = getConfig()
-    const {data: cartUpsell} = useQuery({
+    const {data: cartUpsell, apiKey} = useFetchOneEntry({
         queryKey: ['Builder-Fetch-CartUpsell'],
-        queryFn: async () => {
-            return await fetchOneEntry({
-                model: builderConfig.cartUpsellModel,
-                enrich: true,
-                apiKey: config.app.builder.api,
-                userAttributes: {
-                    product: product?.master?.masterId
-                }
-            })
+        options: {
+            model: builderConfig.cartUpsellModel,
+            userAttributes: {
+                product: product?.master?.masterId
+            }
         }
     })
 
@@ -29,7 +23,7 @@ const CartUpsell = ({product}) => {
                     model={builderConfig.cartUpsellModel}
                     content={cartUpsell}
                     enrich={true}
-                    apiKey={config.app.builder.api}
+                    apiKey={apiKey}
                     data={{product}}
                     customComponents={customComponents}
                 />

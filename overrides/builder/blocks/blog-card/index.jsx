@@ -1,33 +1,35 @@
 import React, {useEffect, useState} from 'react'
-import {Text, Skeleton} from '@chakra-ui/react'
+import {Text, Skeleton} from '@salesforce/retail-react-app/app/components/shared/ui'
 import loadable from '@loadable/component'
 import {Link} from 'react-router-dom'
-import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import PropTypes from 'prop-types'
+import {useFetchOneEntry} from '~/builder/hooks'
+import {isPreviewing} from '@builder.io/sdk-react'
 
 const fallback = <Skeleton height="75vh" width="100%" />
 const BlogCard = loadable(() => import('./blog-card'), {fallback})
 
 export function BuilderBlogCard(props) {
-    const [article, setArticle] = useState(props.article?.value)
-    const builderConfig = getConfig()
-    // FIXME: this should be updated to use the gen2 api fetchOneEntry() and associated useQuery pattern
-    useEffect(() => {
-        async function fetchBlog() {
-            setArticle(
-                await fetch(
-                    `https://cdn.builder.io/api/v2/content/${props.article.model}/${props.article.id}?apiKey=${builderConfig.api}&includeRefs=true`
-                ).then((res) => res.json())
-            )
+    const {
+        data: article,
+        isLoading,
+        isError
+    } = useFetchOneEntry({
+        queryKey: ['Builder-Fetch-blog', props.article?.id],
+        options: {
+            model: props.article.model,
+            query: {
+                id: props.article.id
+            }
         }
-        if (props.article?.id) {
-            fetchBlog()
-        }
-    }, [props.article])
+    })
+
+    // TODO: use isLoading to render a skeleton
 
     if (article) {
+        console.log('ARTICLE', article)
         return (
-            <Link to={`/blog/${article.data.slug}`}>
+            <Link to={`/blog/${article.data?.slug}`}>
                 <BlogCard
                     isColumn={props.isColumn}
                     date={new Date(article.lastUpdated || Date.now())}
@@ -40,7 +42,7 @@ export function BuilderBlogCard(props) {
             </Link>
         )
     }
-    return <Text>Pick an article</Text>
+    return isPreviewing() ? <Text>Pick an article</Text> : null
 }
 
 BuilderBlogCard.propTypes = {

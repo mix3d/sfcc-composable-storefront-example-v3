@@ -2,9 +2,7 @@ import React from 'react'
 import loadable from '@loadable/component'
 import {useLocation} from 'react-router-dom'
 import Seo from '@salesforce/retail-react-app/app/components/seo'
-import {Box, Skeleton} from '@chakra-ui/react'
-
-import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
+import {Box, Skeleton} from '@salesforce/retail-react-app/app/components/shared/ui'
 
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
@@ -14,16 +12,14 @@ const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pag
 
 export const MarketingPage = () => {
     const location = useLocation()
-    const config = getConfig()
 
     const urlPath = location.pathname
 
-    const {data, isLoading, isError} = useFetchOneEntry({
+    const {data, apiKey, isLoading, isError} = useFetchOneEntry({
         queryKey: ['Builder-Fetch-marketing', urlPath],
         options: {
             model: builderConfig.pageModel,
-            userAttributes: {urlPath},
-            apiKey: config.app.builder.api
+            userAttributes: {urlPath}
         }
     })
 
@@ -52,7 +48,7 @@ export const MarketingPage = () => {
             <Content
                 model={builderConfig.pageModel}
                 content={data}
-                apiKey={config.app.builder.api}
+                apiKey={apiKey}
                 enrich={true}
                 customComponents={customComponents}
             />

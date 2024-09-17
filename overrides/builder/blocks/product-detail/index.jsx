@@ -1,6 +1,6 @@
 import React from 'react'
 import loadable from '@loadable/component'
-import {Skeleton} from '@chakra-ui/react'
+import {Skeleton} from '@salesforce/retail-react-app/app/components/shared/ui'
 
 const fallback = <Skeleton height="75vh" width="100%" />
 const ProductDetail = loadable(() => import('./product-detail'), {fallback})

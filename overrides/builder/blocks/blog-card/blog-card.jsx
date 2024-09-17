@@ -1,6 +1,17 @@
+/**
+ * Blog Card page, using entirely Builder Datamodels
+ */
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Box, Heading, Link, Image, Text, HStack, Tag, useColorModeValue} from '@chakra-ui/react'
+import {
+    Box,
+    Heading,
+    Link,
+    Image,
+    Text,
+    HStack
+} from '@salesforce/retail-react-app/app/components/shared/ui'
+import {Tag, useColorModeValue} from '@chakra-ui/react'
 
 const BlogTags = (props) => {
     return (
