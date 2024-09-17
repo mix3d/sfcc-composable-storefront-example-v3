@@ -9,6 +9,9 @@
 
 import path from 'path'
 import {getRuntime} from '@salesforce/pwa-kit-runtime/ssr/server/express'
+// TODO: fix the jsconfig to prevent this warning
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/middleware'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
