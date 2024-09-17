@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import React, {useState} from 'react'
+import React, {useState, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {useIntl} from 'react-intl'
 import {SimpleGrid, Button} from '@salesforce/retail-react-app/app/components/shared/ui'
@@ -40,6 +40,10 @@ const ProductsGrid = ({productIds}) => {
         {parameters: {ids: productIds, allImages: true}},
         {enabled: productIds?.length > 0}
     )
+
+    const convertedProducts = useMemo(() => {
+        return products?.data?.map(convertUseProductsToUseProductSearchFormat)
+    }, [products])
 
     const customerId = useCustomerId()
 
@@ -133,6 +137,7 @@ const ProductsGrid = ({productIds}) => {
     }
 
     const isPageLoading = isProductsLoading || isWishlistLoading
+    console.log('PRODUCTMAP', products?.data)
 
     return (
         <SimpleGrid columns={[2, 2, 3, 3]} spacingX={4} spacingY={{base: 12, lg: 16}}>
@@ -145,30 +150,28 @@ const ProductsGrid = ({productIds}) => {
                               data-testid="product-scroller-item-skeleton"
                           />
                       ))
-                : products?.map((product) => {
+                : convertedProducts.map((product) => {
                       const isInWishlist = !!wishlist?.customerProductListItems?.find(
                           (item) => item.productId === product.id
                       )
 
                       return (
-                          <>
-                              <ProductTile
-                                  data-testid={`sf-product-tile-${product.id}`}
-                                  key={product.id}
-                                  product={product}
-                                  enableFavourite={true}
-                                  isFavourite={isInWishlist}
-                                  onFavouriteToggle={(isFavourite) => {
-                                      const action = isFavourite
-                                          ? addItemToWishlist
-                                          : removeItemFromWishlist
-                                      return action(product)
-                                  }}
-                                  dynamicImageProps={{
-                                      widths: ['70vw', '70vw', '40vw', '30vw']
-                                  }}
-                              />
-                          </>
+                          <ProductTile
+                              data-testid={`sf-product-tile-${product.id}`}
+                              key={product.id}
+                              product={product}
+                              enableFavourite={true}
+                              isFavourite={isInWishlist}
+                              onFavouriteToggle={(isFavourite) => {
+                                  const action = isFavourite
+                                      ? addItemToWishlist
+                                      : removeItemFromWishlist
+                                  return action(product)
+                              }}
+                              dynamicImageProps={{
+                                  widths: ['70vw', '70vw', '40vw', '30vw']
+                              }}
+                          />
                       )
                   })}
         </SimpleGrid>
@@ -177,6 +180,29 @@ const ProductsGrid = ({productIds}) => {
 
 ProductsGrid.propTypes = {
     productIds: PropTypes.any
+}
+
+// the useProducts hook returns an array of products in a different format than the useProductSearch hook
+// this function attempts to map the useProducts format to the useProductSearch format, to work with the ProductTile component.
+// STRONGLY encourage looking for a better way to do this!
+function convertUseProductsToUseProductSearchFormat(product) {
+    const largeImage =
+        product.imageGroups.find((group) => group.viewType === 'large')?.images[0] || {}
+
+    return {
+        currency: product.currency,
+        image: {
+            alt: largeImage.title ?? largeImage.alt ?? '',
+            disBaseLink: largeImage.disBaseLink ?? '',
+            link: largeImage.link ?? '',
+            title: largeImage.title ?? ''
+        },
+        price: product.price,
+        productId: product.id,
+        hitType: product.type.master ? 'master' : 'variant',
+        name: product.name,
+        productName: product.name
+    }
 }
 
 export default ProductsGrid
