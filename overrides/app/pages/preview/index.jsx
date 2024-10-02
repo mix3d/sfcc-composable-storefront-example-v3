@@ -16,20 +16,21 @@ export const EditorPreview = () => {
     const {modelName} = useParams()
 
     const Entry = useMemo(
-        SingleEntryContentGenerator({
-            queryKey: ['Builder-Editor-Preview', urlPath],
-            options: {
-                model: modelName
-            },
-            skeletonComponent: (
-                <Box css={{minHeight: '100vh'}}>
-                    <Skeleton height="75vh" width="100%" />
-                </Box>
-            ),
-            errorComponent: <PageNotFound />,
-            // for surfacing customcomponents to Builder's visual Editor
-            customComponents
-        }),
+        () =>
+            SingleEntryContentGenerator({
+                queryKey: [`Builder-Editor-Preview-${modelName}`, urlPath],
+                options: {
+                    model: modelName
+                },
+                skeletonComponent: (
+                    <Box css={{minHeight: '100vh'}}>
+                        <Skeleton height="75vh" width="100%" />
+                    </Box>
+                ),
+                errorComponent: <PageNotFound />,
+                // for surfacing customcomponents to Builder's visual Editor
+                customComponents
+            }),
         [urlPath, modelName]
     )
 
