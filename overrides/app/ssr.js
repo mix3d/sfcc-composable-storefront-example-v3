@@ -17,20 +17,13 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
 
 import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
-import {printDirectoryTree} from '~/builder/server-dir-tree'
 /*
   THIS IS THE ERROR HERE, EVEN THOUGH THERE IS THE NODE FILE IN THE BUNDLE:
   'errorType': 'UnhandledPromiseRejection', 'errorMessage': 'Error: node-loader:\nError: /var/task/build/5dd78dd2dd30c4c9c75e0f991ffec557.node: cannot open shared object file: No such file or directory'
 
   I have also tried this specifically in the app.get(*) route definition below
 */
-if (typeof window === 'undefined') {
-    console.log(__dirname)
-    printDirectoryTree(__dirname)
-    console.log('DEBUG: ssr.js before initializeNodeRuntime')
-    initializeNodeRuntime()
-    console.log('DEBUG: ssr.js after initializeNodeRuntime')
-}
+// if (typeof window === 'undefined') {im
 
 const options = {
     // The build directory (an absolute path)
@@ -56,6 +49,7 @@ const runtime = getRuntime()
 const {handler} = runtime.createHandler(options, (app) => {
     // Set default HTTP security headers required by PWA Kit
     app.use(defaultPwaKitSecurityHeaders)
+    app.use(builderMiddleware)
     // Set custom HTTP security headers
     app.use(
         helmet({
@@ -124,3 +118,11 @@ const {handler} = runtime.createHandler(options, (app) => {
 // SSR requires that we export a single handler function called 'get', that
 // supports AWS use of the server that we created above.
 export const get = handler
+
+function builderMiddleware(req, res, next) {
+    console.log('DEBUG: builderMiddleware before initializeNodeRuntime')
+    initializeNodeRuntime()
+    console.log('DEBUG: builderMiddleware after initializeNodeRuntime')
+
+    next()
+}
