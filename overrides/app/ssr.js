@@ -126,9 +126,15 @@ export const get = handler
 
 function builderMiddleware(req, res, next) {
     console.log('DEBUG: builderMiddleware before initializeNodeRuntime')
-    initializeNodeRuntime()
-    testIsolatedVM()
-    console.log('DEBUG: builderMiddleware after initializeNodeRuntime')
+    import('@builder.io/sdk-react/node/init').then(({initializeNodeRuntime}) => {
+        console.log('DEBUG: builderMiddleware inside import')
 
-    next()
+        initializeNodeRuntime()
+        console.log('DEBUG: builderMiddleware after initializeNodeRuntime call')
+
+        testIsolatedVM()
+        console.log('DEBUG: builderMiddleware after initializeNodeRuntime')
+
+        next()
+    })
 }
