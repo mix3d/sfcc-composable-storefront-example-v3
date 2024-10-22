@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // Require is required for this file, hence the eslint-disable comment
 const config = require('@salesforce/pwa-kit-dev/configs/webpack/config')
-const {CLIENT, SSR, SERVER} = require('@salesforce/pwa-kit-dev/configs/webpack/config-names')
+const {SSR, SERVER} = require('@salesforce/pwa-kit-dev/configs/webpack/config-names')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 
@@ -36,8 +36,6 @@ config.forEach((c) => {
             test: /(isolated_vm)\.node$/,
             loader: 'node-loader'
         })
-    } else if (c.name === CLIENT) {
-        c.resolve.alias['isolated-vm'] = path.resolve(__dirname, './dummy-isolated-vm.js')
     }
 })
 
