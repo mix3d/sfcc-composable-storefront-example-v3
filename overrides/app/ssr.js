@@ -110,7 +110,9 @@ const {handler} = runtime.createHandler(options, (app) => {
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
     app.get('*', (...args) => {
-        // initializeNodeRuntime()
+        console.log('DEBUG: ssr.js before initializeNodeRuntime')
+        initializeNodeRuntime()
+        console.log('DEBUG: ssr.js after initializeNodeRuntime')
         runtime.render(...args)
     })
 })
