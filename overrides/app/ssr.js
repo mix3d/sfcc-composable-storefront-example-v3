@@ -17,6 +17,8 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
 
 import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
+import {testIsolatedVM} from './test-ivm'
+
 /*
   THIS IS THE ERROR HERE, EVEN THOUGH THERE IS THE NODE FILE IN THE BUNDLE:
   'errorType': 'UnhandledPromiseRejection', 'errorMessage': 'Error: node-loader:\nError: /var/task/build/5dd78dd2dd30c4c9c75e0f991ffec557.node: cannot open shared object file: No such file or directory'
@@ -112,6 +114,7 @@ const {handler} = runtime.createHandler(options, (app) => {
     app.get('*', (...args) => {
         console.log('DEBUG: ssr.js before initializeNodeRuntime')
         initializeNodeRuntime()
+        testIsolatedVM()
         console.log('DEBUG: ssr.js after initializeNodeRuntime')
         runtime.render(...args)
     })
@@ -124,6 +127,7 @@ export const get = handler
 function builderMiddleware(req, res, next) {
     console.log('DEBUG: builderMiddleware before initializeNodeRuntime')
     initializeNodeRuntime()
+    testIsolatedVM()
     console.log('DEBUG: builderMiddleware after initializeNodeRuntime')
 
     next()
