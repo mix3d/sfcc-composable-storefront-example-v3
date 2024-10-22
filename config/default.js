@@ -71,7 +71,7 @@ module.exports = {
     ],
     // Additional parameters that configure Express app behavior.
     ssrParameters: {
-        ssrFunctionNodeVersion: '18.x',
+        ssrFunctionNodeVersion: '20.x',
         proxyConfigs: [
             {
                 host: 'kv7kzm78.api.commercecloud.salesforce.com',
