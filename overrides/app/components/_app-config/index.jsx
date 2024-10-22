@@ -19,5 +19,10 @@ register('insertMenu', {
 // Note: Custom Components registration for Gen2 SDK is accomplished through passing an array of the Component Definitions to each <Content> component.
 // See /builder/blocks/index.js for the customComponents array, and
 // /app/pages/home/index.jsx for an example of passing the customComponents array to a <Content> component.
+console.log('DEBUG: AppConfig before initializeNodeRuntime import')
+import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
+console.log('DEBUG: AppConfig after initializeNodeRuntime import')
+initializeNodeRuntime()
+console.log('DEBUG: AppConfig after initializeNodeRuntime call')
 
 export default AppConfig

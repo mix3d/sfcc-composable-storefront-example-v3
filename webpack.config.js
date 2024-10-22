@@ -12,9 +12,29 @@ config.forEach((c) => {
         ...c.resolve,
         alias: {
             ...c?.resolve?.alias,
-            '~': path.resolve(__dirname, './overrides')
+            '~': path.resolve(__dirname, './overrides'),
+            ...(c.name === CLIENT
+                ? {
+                      // prevent the `@builder.io/sdk-react/node/init` import from being bundled into the client bundle
+                      '@builder.io/sdk-react/node/init': path.resolve(
+                          __dirname,
+                          './dummy-module.js'
+                      )
+                  }
+                : {
+                      //   '@builder.io/sdk-react/node/init': path.resolve(
+                      //       __dirname,
+                      //       './dummy-module.js'
+                      //   )
+                  })
         }
     }
+    if (c.name === CLIENT) {
+        console.log('DEBUG: webpack.config.js CLIENT', {
+            __dirname
+        })
+    }
+
     // add a CSS loader to handle CSS file imports directly
     // Not required for Builder integration, but useful for most projects
     c.module.rules.push({
