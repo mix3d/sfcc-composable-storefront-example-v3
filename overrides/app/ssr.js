@@ -15,18 +15,7 @@ import {getRuntime} from '@salesforce/pwa-kit-runtime/ssr/server/express'
 import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/middleware'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
-
-import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
-import {testIsolatedVM} from './test-ivm'
 import ivm from 'isolated-vm'
-
-/*
-  THIS IS THE ERROR HERE, EVEN THOUGH THERE IS THE NODE FILE IN THE BUNDLE:
-  'errorType': 'UnhandledPromiseRejection', 'errorMessage': 'Error: node-loader:\nError: /var/task/build/5dd78dd2dd30c4c9c75e0f991ffec557.node: cannot open shared object file: No such file or directory'
-
-  I have also tried this specifically in the app.get(*) route definition below
-*/
-// if (typeof window === 'undefined') {im
 
 const options = {
     // The build directory (an absolute path)
