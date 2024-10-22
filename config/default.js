@@ -58,7 +58,8 @@ module.exports = {
     ssrEnabled: true,
     // This list determines which files are available exclusively to the server-side rendering system
     // and are not available through the /mobify/bundle/ path.
-    ssrOnly: ['ssr.js', 'ssr.js.map', 'node_modules/**/*.*'],
+    // BUILDER: Allow .node files to be included in the server bundle for isolated-vm
+    ssrOnly: ['ssr.js', 'ssr.js.map', 'node_modules/**/*.*', '*.node'],
     // This list determines which files are available to the server-side rendering system
     // and available through the /mobify/bundle/ path.
     ssrShared: [
@@ -70,7 +71,7 @@ module.exports = {
     ],
     // Additional parameters that configure Express app behavior.
     ssrParameters: {
-        ssrFunctionNodeVersion: '18.x',
+        ssrFunctionNodeVersion: '20.x',
         proxyConfigs: [
             {
                 host: 'kv7kzm78.api.commercecloud.salesforce.com',

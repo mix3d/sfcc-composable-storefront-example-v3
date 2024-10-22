@@ -25,6 +25,7 @@ import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hook
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
 import {useFetchOneEntry} from '~/builder/hooks'
+import {setIvm} from '@builder.io/sdk-react/node/setIvm'
 
 /**
  * This is the home page for Retail React App.
@@ -36,13 +37,20 @@ const Home = () => {
     const einstein = useEinstein()
     const {pathname} = useLocation()
 
+    // console.log('DEBUG: Home before useServerContext')
+
     // useServerContext is a special hook introduced in v3 PWA Kit SDK.
     // It replaces the legacy `getProps` and provide a react hook interface for SSR.
     // it returns the request and response objects on the server side,
     // and these objects are undefined on the client side.
-    const {res} = useServerContext()
+    const {res, req} = useServerContext()
+
     if (res) {
         res.set('Cache-Control', `s-maxage=${MAX_CACHE_AGE}`)
+    }
+
+    if (req) {
+        setIvm(req.ivm)
     }
 
     const {data, apiKey, isLoading, isError} = useFetchOneEntry({

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "See license in LICENSE",
   "engines": {
-    "node": "^18.0.0 || ^20.0.0",
+    "node": "^20.15.1",
     "npm": "^9.0.0 || ^10.0.0"
   },
   "ccExtensibility": {
@@ -11,12 +11,13 @@
     "overridesDir": "overrides"
   },
   "dependencies": {
-    "@builder.io/sdk-react": "^1.0.23",
+    "@builder.io/sdk-react": "^2.0.24-2",
     "mini-css-extract-plugin": "^2.8.1",
     "patch-package": "^8.0.0"
   },
   "devDependencies": {
-    "@salesforce/retail-react-app": "2.3.1"
+    "@salesforce/retail-react-app": "2.3.1",
+    "node-loader": "^2.0.0"
   },
   "scripts": {
     "analyze-build": "cross-env MOBIFY_ANALYZE=true npm run build",

@@ -1,0 +1,65 @@
+name: PWA Kit Deploy to MRT staging
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}
+
+permissions:
+    contents: read
+    actions: read
+
+jobs:
+    pwa-build-push-deploy:
+        runs-on: ubuntu-20.04
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Set environment for branch
+              run: |
+                  echo "BUILD_NUMBER=UAT_BUILD_${GITHUB_RUN_NUMBER}" >> "$GITHUB_ENV"
+                  echo "Build name is ${{ env.BUILD_NUMBER }}"
+
+            # Setup Node Environment
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20.15.1'
+
+            # Speed up workflow by caching node_modules
+            - name: Cache node_modules
+              id: cache-node-modules
+              uses: actions/cache@v4
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-node_modules-${{ hashFiles('package.json') }}
+
+            # Install node_modules
+            - name: Install node_modules
+              if: steps.cache-node-modules.outputs.cache-hit != 'true'
+              run: |
+                  npm install
+
+            # Auth for Managed Runtime
+            - name: Auth for Managed Runtime
+              env:
+                  MRT_AUTH_API_KEY: ${{ secrets.MRT_AUTH_API_KEY }}
+                  MRT_AUTH_API_USER: ${{ secrets.MRT_AUTH_API_USER }}
+              run: |
+                  npm run save-credentials -- --user $MRT_AUTH_API_USER --key $MRT_AUTH_API_KEY
+
+            # Push and deploy bundle to the Managed Runtime
+            - name: Push bundle to the Managed Runtime
+              env:
+                  MRT_BUNDLE_TITLE: ${{ github.event.head_commit.message }}
+                  MRT_TARGET_ENV_ID: ${{ vars.MRT_TARGET_ENV_ID_STG }}
+              run: |
+                  npm run push -- -m "$MRT_BUNDLE_TITLE" -t $MRT_TARGET_ENV_ID

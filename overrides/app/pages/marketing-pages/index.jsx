@@ -7,6 +7,8 @@ import {Box, Skeleton} from '@salesforce/retail-react-app/app/components/shared/
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
 import {useFetchOneEntry} from '~/builder/hooks'
+import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hooks'
+import {setIvm} from '@builder.io/sdk-react/node/setIvm'
 
 const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
 
@@ -14,6 +16,11 @@ export const MarketingPage = () => {
     const location = useLocation()
 
     const urlPath = location.pathname
+
+    const {req} = useServerContext()
+    if (req) {
+        setIvm(req.ivm)
+    }
 
     const {data, apiKey, isLoading, isError} = useFetchOneEntry({
         queryKey: ['Builder-Fetch-marketing', urlPath],

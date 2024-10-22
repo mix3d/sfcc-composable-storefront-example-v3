@@ -15,6 +15,7 @@ import {getRuntime} from '@salesforce/pwa-kit-runtime/ssr/server/express'
 import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/middleware'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
+import ivm from 'isolated-vm'
 
 const options = {
     // The build directory (an absolute path)
@@ -99,7 +100,10 @@ const {handler} = runtime.createHandler(options, (app) => {
     app.get('/favicon.ico', runtime.serveStaticFile('static/ico/favicon.ico'))
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
-    app.get('*', runtime.render)
+    app.get('*', (...args) => {
+        args[0].ivm = ivm
+        runtime.render(...args)
+    })
 })
 
 // SSR requires that we export a single handler function called 'get', that
