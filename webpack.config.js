@@ -26,17 +26,17 @@ config.forEach((c) => {
     c.plugins.push(new MiniCssExtractPlugin({filename: '[name].css'}))
 
     // Server-only config changes here
-    if (c.name === SERVER || c.name === SSR) {
-        // add node-loader plugin so Builder's isolated-vm module will be included in server-side bundle:
-        c.resolve.extensions.push('.node')
+    // if (c.name === SERVER || c.name === SSR) {
+    //     // add node-loader plugin so Builder's isolated-vm module will be included in server-side bundle:
+    //     c.resolve.extensions.push('.node')
 
-        // here we list acceptable file names because `.node` files are binaries
-        // and we want to be really selective about which we'll import using this loader.
-        c.module.rules.push({
-            test: /(isolated_vm)\.node$/,
-            loader: 'node-loader'
-        })
-    }
+    //     // here we list acceptable file names because `.node` files are binaries
+    //     // and we want to be really selective about which we'll import using this loader.
+    //     c.module.rules.push({
+    //         test: /(isolated_vm)\.node$/,
+    //         loader: 'node-loader'
+    //     })
+    // }
 })
 
 module.exports = config
