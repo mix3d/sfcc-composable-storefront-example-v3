@@ -52,7 +52,6 @@ const runtime = getRuntime()
 const {handler} = runtime.createHandler(options, (app) => {
     // Set default HTTP security headers required by PWA Kit
     app.use(defaultPwaKitSecurityHeaders)
-    // app.use(builderMiddleware)
     // Set custom HTTP security headers
     app.use(
         helmet({
@@ -113,10 +112,6 @@ const {handler} = runtime.createHandler(options, (app) => {
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
     app.get('*', (...args) => {
-        // console.log('DEBUG: ssr.js before initializeNodeRuntime')
-        // initializeNodeRuntime()
-        // testIsolatedVM()
-        // console.log('DEBUG: ssr.js after initializeNodeRuntime')
         args[0].foo = ivm
         runtime.render(...args)
     })
@@ -125,18 +120,3 @@ const {handler} = runtime.createHandler(options, (app) => {
 // SSR requires that we export a single handler function called 'get', that
 // supports AWS use of the server that we created above.
 export const get = handler
-
-function builderMiddleware(req, res, next) {
-    console.log('DEBUG: builderMiddleware before initializeNodeRuntime')
-    import('@builder.io/sdk-react/node/init').then(({initializeNodeRuntime}) => {
-        console.log('DEBUG: builderMiddleware inside import')
-
-        initializeNodeRuntime()
-        console.log('DEBUG: builderMiddleware after initializeNodeRuntime call')
-
-        testIsolatedVM()
-        console.log('DEBUG: builderMiddleware after initializeNodeRuntime')
-
-        next()
-    })
-}
