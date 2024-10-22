@@ -25,6 +25,7 @@ import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hook
 import {Content, isPreviewing} from '@builder.io/sdk-react'
 import {customComponents, builderConfig} from '~/builder'
 import {useFetchOneEntry} from '~/builder/hooks'
+import {setIvm} from '@builder.io/sdk-react/node/setIvm'
 
 /**
  * This is the home page for Retail React App.
@@ -55,6 +56,7 @@ const Home = () => {
         console.log('DEBUG: Home req', req.foo)
         const foo = new req.foo.Isolate().createContextSync().evalSync('1 + 1')
         console.log('testing isolated-vm execution: ', foo)
+        setIvm(req.foo)
     }
 
     const {data, apiKey, isLoading, isError} = useFetchOneEntry({
