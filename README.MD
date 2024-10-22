@@ -32,10 +32,10 @@ Note: This project serves as an integration example, and is not an officially su
 -  Recommended Content Fetching patterns in `builder/hooks/fetchWrappers.js`
 
 TODO: Build examples for
-- SEO from Builder on pages
+- SEO from Builder on pages - Page Model's data model
 - Datamodel driven Nav menu, footer
-- Merchandize nav menu area
-- PLP list tile Content insertion
+- Merchandize nav menu area - Section Model
+- PLP list tile Content insertion - Section Model with inputs
 - More Product Components
 - Localization examples
   - Page Level
