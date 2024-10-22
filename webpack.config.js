@@ -12,27 +12,8 @@ config.forEach((c) => {
         ...c.resolve,
         alias: {
             ...c?.resolve?.alias,
-            '~': path.resolve(__dirname, './overrides'),
-            ...(c.name === CLIENT
-                ? {
-                      // prevent the `@builder.io/sdk-react/node/init` import from being bundled into the client bundle
-                      '@builder.io/sdk-react/node/init': path.resolve(
-                          __dirname,
-                          './dummy-module.js'
-                      )
-                  }
-                : {
-                      //   '@builder.io/sdk-react/node/init': path.resolve(
-                      //       __dirname,
-                      //       './dummy-module.js'
-                      //   )
-                  })
+            '~': path.resolve(__dirname, './overrides')
         }
-    }
-    if (c.name === CLIENT) {
-        console.log('DEBUG: webpack.config.js CLIENT', {
-            __dirname
-        })
     }
 
     // add a CSS loader to handle CSS file imports directly
@@ -43,20 +24,6 @@ config.forEach((c) => {
     })
 
     c.plugins.push(new MiniCssExtractPlugin({filename: '[name].css'}))
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // THIS IS THE AREA BUILDER.IO NEEDS TO WORK WITH ISOLATED-VM THAT ISN'T WORKING AS EXPECTED
-    // We assume that one or both of ssr.js and @salesforce/pwa-kit-react-sdk/ssr/server/react-rendering.js
-    // are an ideal place to initialize the isolated-vm module, but could be focused on the wrong area.
-    //
-    // see ssr.js for example of that attempt (and associated error)
-    //
-    // Same approach for react-rendering.js, which I manually modified in the node_modules directory but got this error:
-    //    Cannot get final name for export '__esModule' of ./node_modules/@salesforce/pwa-kit-react-sdk/ssr/server/react-rendering.js
-    //         while generating the root export '__esModule' (used name: '__esModule')
-    // Note: this probably needs to be fixed at the source level and not the built file if we wanted to change this file?
-    //
-    // See associated Support Ticket for more details
 
     // Server-only config changes here
     if (c.name === SERVER || c.name === SSR) {
@@ -69,6 +36,8 @@ config.forEach((c) => {
             test: /(isolated_vm)\.node$/,
             loader: 'node-loader'
         })
+    } else if (c.name === CLIENT) {
+        c.resolve.alias['isolated-vm'] = path.resolve(__dirname, './dummy-isolated-vm.js')
     }
 })
 

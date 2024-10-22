@@ -36,13 +36,25 @@ const Home = () => {
     const einstein = useEinstein()
     const {pathname} = useLocation()
 
+    // console.log('DEBUG: Home before useServerContext')
+
     // useServerContext is a special hook introduced in v3 PWA Kit SDK.
     // It replaces the legacy `getProps` and provide a react hook interface for SSR.
     // it returns the request and response objects on the server side,
     // and these objects are undefined on the client side.
-    const {res} = useServerContext()
+    const {res, req} = useServerContext()
+
+    console.log('DEBUG: Home')
     if (res) {
+        // console.log('DEBUG: Home res', res)
+
         res.set('Cache-Control', `s-maxage=${MAX_CACHE_AGE}`)
+    }
+
+    if (req) {
+        console.log('DEBUG: Home req', req.foo)
+        const foo = new req.foo.Isolate().createContextSync().evalSync('1 + 1')
+        console.log('testing isolated-vm execution: ', foo)
     }
 
     const {data, apiKey, isLoading, isError} = useFetchOneEntry({

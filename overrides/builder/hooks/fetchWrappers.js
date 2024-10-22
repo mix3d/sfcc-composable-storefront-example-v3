@@ -16,11 +16,6 @@ const fetchHookGenerator =
         const query = useQuery({
             queryKey: createQueryKeyArray(queryKey),
             queryFn: async () => {
-                console.log('DEBUG: fetchHookGenerator queryFn')
-                const {initializeNodeRuntime} = await import('@builder.io/sdk-react/node/init')
-                console.log('DEBUG: fetchHookGenerator queryFn after import')
-                initializeNodeRuntime()
-                console.log('DEBUG: fetchHookGenerator queryFn after initializeNodeRuntime')
                 return await fetchFunction({
                     apiKey,
                     ...options

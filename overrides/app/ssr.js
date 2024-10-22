@@ -18,6 +18,7 @@ import helmet from 'helmet'
 
 import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
 import {testIsolatedVM} from './test-ivm'
+import ivm from 'isolated-vm'
 
 /*
   THIS IS THE ERROR HERE, EVEN THOUGH THERE IS THE NODE FILE IN THE BUNDLE:
@@ -51,7 +52,7 @@ const runtime = getRuntime()
 const {handler} = runtime.createHandler(options, (app) => {
     // Set default HTTP security headers required by PWA Kit
     app.use(defaultPwaKitSecurityHeaders)
-    app.use(builderMiddleware)
+    // app.use(builderMiddleware)
     // Set custom HTTP security headers
     app.use(
         helmet({
@@ -112,10 +113,11 @@ const {handler} = runtime.createHandler(options, (app) => {
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
     app.get('*', (...args) => {
-        console.log('DEBUG: ssr.js before initializeNodeRuntime')
-        initializeNodeRuntime()
-        testIsolatedVM()
-        console.log('DEBUG: ssr.js after initializeNodeRuntime')
+        // console.log('DEBUG: ssr.js before initializeNodeRuntime')
+        // initializeNodeRuntime()
+        // testIsolatedVM()
+        // console.log('DEBUG: ssr.js after initializeNodeRuntime')
+        args[0].foo = ivm
         runtime.render(...args)
     })
 })
