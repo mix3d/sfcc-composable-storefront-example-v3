@@ -16,6 +16,20 @@ import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/mi
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
 
+// import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
+import {printDirectoryTree} from '~/builder/server-dir-tree'
+/*
+  THIS IS THE ERROR HERE, EVEN THOUGH THERE IS THE NODE FILE IN THE BUNDLE:
+  'errorType': 'UnhandledPromiseRejection', 'errorMessage': 'Error: node-loader:\nError: /var/task/build/5dd78dd2dd30c4c9c75e0f991ffec557.node: cannot open shared object file: No such file or directory'
+
+  I have also tried this specifically in the app.get(*) route definition below
+*/
+if (typeof window === 'undefined') {
+    console.log(__dirname)
+    printDirectoryTree(__dirname)
+    // initializeNodeRuntime()
+}
+
 const options = {
     // The build directory (an absolute path)
     buildDir: path.resolve(process.cwd(), 'build'),
@@ -99,7 +113,10 @@ const {handler} = runtime.createHandler(options, (app) => {
     app.get('/favicon.ico', runtime.serveStaticFile('static/ico/favicon.ico'))
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
-    app.get('*', runtime.render)
+    app.get('*', (...args) => {
+        // initializeNodeRuntime()
+        runtime.render(...args)
+    })
 })
 
 // SSR requires that we export a single handler function called 'get', that
