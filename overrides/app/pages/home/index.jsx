@@ -50,7 +50,7 @@ const Home = () => {
     }
 
     if (req) {
-        setIvm(req.foo)
+        setIvm(req.ivm)
     }
 
     const {data, apiKey, isLoading, isError} = useFetchOneEntry({

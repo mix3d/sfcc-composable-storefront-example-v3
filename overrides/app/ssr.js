@@ -101,7 +101,7 @@ const {handler} = runtime.createHandler(options, (app) => {
 
     app.get('/worker.js(.map)?', runtime.serveServiceWorker)
     app.get('*', (...args) => {
-        args[0].foo = ivm
+        args[0].ivm = ivm
         runtime.render(...args)
     })
 })

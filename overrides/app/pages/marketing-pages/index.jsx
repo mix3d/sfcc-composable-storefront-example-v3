@@ -19,7 +19,7 @@ export const MarketingPage = () => {
 
     const {req} = useServerContext()
     if (req) {
-        setIvm(req.foo)
+        setIvm(req.ivm)
     }
 
     const {data, apiKey, isLoading, isError} = useFetchOneEntry({
