@@ -16,7 +16,7 @@ import {defaultPwaKitSecurityHeaders} from '@salesforce/pwa-kit-runtime/utils/mi
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 import helmet from 'helmet'
 
-// import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
+import {initializeNodeRuntime} from '@builder.io/sdk-react/node/init'
 import {printDirectoryTree} from '~/builder/server-dir-tree'
 /*
   THIS IS THE ERROR HERE, EVEN THOUGH THERE IS THE NODE FILE IN THE BUNDLE:
@@ -27,7 +27,9 @@ import {printDirectoryTree} from '~/builder/server-dir-tree'
 if (typeof window === 'undefined') {
     console.log(__dirname)
     printDirectoryTree(__dirname)
-    // initializeNodeRuntime()
+    console.log('DEBUG: ssr.js before initializeNodeRuntime')
+    initializeNodeRuntime()
+    console.log('DEBUG: ssr.js after initializeNodeRuntime')
 }
 
 const options = {
