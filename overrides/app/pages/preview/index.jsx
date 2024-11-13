@@ -6,10 +6,21 @@ import {Box, Skeleton} from '@salesforce/retail-react-app/app/components/shared/
 import {customComponents} from '~/builder'
 import {SingleEntryContentGenerator} from '~/builder/utils/SingleEntryContentGenerator'
 
+import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
+import {Content} from '@builder.io/sdk-react'
+
 const PageNotFound = loadable(() => import('@salesforce/retail-react-app/app/pages/page-not-found'))
 
-// Makes use of the SingleEntryContentGenerator to wrap all the Builder stuff
 export const EditorPreview = () => {
+    const {modelName} = useParams()
+
+    const apiKey = getConfig().app.builder.api
+
+    return <Content model={modelName} apiKey={apiKey} customComponents={customComponents} />
+}
+
+// Makes use of the SingleEntryContentGenerator to wrap all the Builder stuff
+export const ComplexEditorPreview = () => {
     const location = useLocation()
 
     const urlPath = location.pathname
