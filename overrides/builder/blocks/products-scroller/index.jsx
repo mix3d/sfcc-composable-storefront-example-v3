@@ -7,7 +7,7 @@ const ProductsScroller = loadable(() => import('./products-scroller'), {fallback
 
 export const ProductsScrollerDefinition = {
     component: ProductsScroller,
-    name: 'ProductsGrid',
+    name: 'ProductsScroller',
     image: 'https://unpkg.com/css.gg@2.0.0/icons/svg/list.svg',
     inputs: [
         {
