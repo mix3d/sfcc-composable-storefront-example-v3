@@ -11,7 +11,7 @@
     "overridesDir": "overrides"
   },
   "dependencies": {
-    "@builder.io/sdk-react": "^2.0.19",
+    "@builder.io/sdk-react": "^4.2.2",
     "mini-css-extract-plugin": "^2.8.1",
     "patch-package": "^8.0.0"
   },

@@ -15,6 +15,7 @@ Note: This project serves as an integration example, and is not an officially su
    -  Necessary due to the MRT preview mode that assumes all iframes are preview mode.
 -  `ssr.js` additions to Content Security Policy (CSP) to enable Builder support.
 -  Webpack config changes to add an `alias` for `~/path/to/file` handling (so you don't need to do deeply nested relative imports like `../../../path/to/file`), and supports importing/requiring CSS files (not required for Builder support but common usecase that PWAKit doesn't handle OOB).
+- Typescript hinting for packages with a jsconfig file
 
 ### Builder Content Areas
 -  Page route overrides that include Builder content areas
