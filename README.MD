@@ -32,18 +32,21 @@ Note: This project serves as an integration example, and is not an officially su
 -  Example Builder insert menu registration in `_app-config` wrapper override
 -  Recommended Content Fetching patterns in `builder/hooks/fetchWrappers.js`
 
-TODO: Build examples for
-- SEO from Builder on pages - Page Model's data model
-- Datamodel driven Nav menu, footer
-- Merchandize nav menu area - Section Model
-- PLP list tile Content insertion - Section Model with inputs
-- More Product Components
-- Localization examples
-  - Page Level
-  - Field Level
-- Design Tokens leveraging Chakra's template styles 
-- Convert example to Typescript
-- Aligning Chakra's Mobile-first breakpoints with Builder's defined breakpoints
+TODO: 
+- Update to latest PWAKit version and Node v22
+- Update Isolated-VM branch to v22 and merge
+- Build examples for:
+  - SEO from Builder on pages - Page Model's data model
+  - Datamodel driven Nav menu, footer
+  - Merchandize nav menu area - Section Model
+  - PLP list tile Content insertion - Section Model with inputs
+  - More Product Components
+  - Localization examples
+    - Page Level
+    - Field Level
+  - Design Tokens leveraging Chakra's template styles 
+  - Convert example to Typescript
+  - Aligning Chakra's Mobile-first breakpoints with Builder's defined breakpoints
 
 ### 🚨 Important Notes about this Example Implementation
 
@@ -56,7 +59,7 @@ Due to an issue with PWAKit's SDKs, it is necessary to patch the SDK to support 
 
 ### Requirements
 
-- Node 18 or later
+- Node 20 or later
 - npm 9 or later
 - [Salesforce Commerce API Public Client Id](https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/setting-up-api-access.html)
   - The Builder <> SFCC Plugin only supports a Public TokenId at the time of writing. PWAkit can still be instantiated with a Private TokenId.
